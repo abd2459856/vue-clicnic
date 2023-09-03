@@ -27,6 +27,10 @@
         <v-icon>mdi-calendar-month</v-icon>
         วันนี้
       </v-btn>
+      <v-btn text to="/calendar/" color="deep-orange">
+        <v-icon>mdi-calendar-month</v-icon>
+        ปฎิทิน
+      </v-btn>
       <v-btn to="/customer/" text color="deep-orange">
         <v-icon>mdi-account-tie</v-icon>
         คนไข้
