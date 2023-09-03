@@ -26,7 +26,10 @@
                 <v-icon color="#D4AF37" small>mdi-account</v-icon>&nbsp; นายแดง
                 ไบเล่
               </p>
-              <p><v-icon color="#D4AF37" small>mdi-id-card</v-icon>&nbsp; HN-2023080001</p>
+              <p>
+                <v-icon color="#D4AF37" small>mdi-id-card</v-icon>&nbsp;
+                HN-2023080001
+              </p>
               <p>
                 <v-icon color="#D4AF37" small>mdi-email</v-icon>&nbsp;
                 aliconnors@example.com
@@ -61,8 +64,12 @@
                     :ReadOn="$route.query.type == 'detail'"
                   ></Detail_cus>
                 </v-card-text>
-                <v-card-actions  class="justify-center" v-if="$route.query.type != 'detail'">
-                  <v-btn color="success"  elevation="0" >
+                <v-card-actions
+                  class="justify-center"
+                  v-if="$route.query.type != 'detail'"
+                  @click="fn_savecustomer"
+                >
+                  <v-btn color="success" elevation="0">
                     <v-icon> mdi-content-save </v-icon>บันทึก
                   </v-btn>
                 </v-card-actions>
@@ -94,6 +101,41 @@ export default {
       tab: 0,
       myDetail: {},
     };
+  },
+  methods: {
+    async fn_savecustomer() {
+      let data = JSON.stringify({
+        ID: ID,
+      });
+      await axios
+        .post(`${process.env.api_url}/ConfigCon/delete_doctor`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async fn_delateData(ID) {
+      let data = JSON.stringify({
+        ID: ID,
+      });
+      await axios
+        .post(`${process.env.api_url}/ConfigCon/delete_doctor`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.fn_getData();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
   },
   mounted() {
     console.log(this.$route.query);
