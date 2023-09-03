@@ -96,7 +96,6 @@
         </v-card-title>
         <v-card-text>
           <v-form ref="form" lazy-validation>
-            {{ formInsert }}
             <v-row>
               <v-col md="6" sm="12" cols="12">
                 <v-text-field label="รหัส" outlined dense hide-details v-model="formInsert.ID_Doctor"></v-text-field>
@@ -135,7 +134,6 @@
     </v-dialog>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 import Vmenu from "@/components/Vmenu";

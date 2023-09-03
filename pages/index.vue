@@ -416,7 +416,7 @@ export default {
   methods: {
     async fn_getData() {
       await axios
-        .get(`${process.env.api_url}/appointment`, {
+        .get(`${process.env.api_url}/Appointment_con/get_appointment`, {
           params: this.formSearch,
           headers: {
             "Content-Type": "application/json",
