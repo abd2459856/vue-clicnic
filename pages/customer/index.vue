@@ -9,7 +9,7 @@
       <v-card-title>
         <b><v-icon>mdi-account-tie</v-icon> คนไข้&nbsp;</b>
         <v-chip color="error" label outlined>
-          ทั้งหมด {{ get_loadtable.length }} รายการ
+          ทั้งหมด {{ desserts.length }} รายการ
         </v-chip>
         <v-spacer />
         <div class="text-center">
@@ -30,10 +30,11 @@
                 dense
                 placeholder="รหัสลูกค้า ชื่อ-นามสกุล เลขบัตรประชาชน"
                 hide-details
+                v-model="textSearch"
               ></v-text-field>
             </v-col>
             <v-col md="1">
-              <v-btn elevation="0" color="primary">
+              <v-btn elevation="0" color="primary" @click="fn_getData">
                 <v-icon>mdi-magnify</v-icon>
                 ค้นหา
               </v-btn>
@@ -85,9 +86,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(r, i) in get_loadtable" :key="i">
+              <tr v-for="(r, i) in desserts" :key="i">
                 <td class="text-center" nowrap="">{{ r.row }}</td>
-                <td nowrap="" class="text-left">{{ r.IDCard }}</td>
+                <td nowrap="" class="text-left">{{ r.ID_customer }}</td>
                 <td nowrap="" class="text-left">{{ r.Nickname }}</td>
                 <td nowrap="" class="text-left">
                   <v-avatar size="30">
@@ -105,7 +106,7 @@
                     color="info"
                     x-small
                     text
-                    to="/customer/profile?type=detail&idcus=101011001"
+                    :to="`/customer/profile?type=detail&idcus=${r.ID_customer}`"
                   >
                     <v-icon> mdi-eye</v-icon>
                   </v-btn>
@@ -114,11 +115,11 @@
                     color="warning"
                     x-small
                     text
-                    to="/customer/profile?type=edit&idcus=101011001"
+                    :to="`/customer/profile?type=edit&idcus=${r.ID_customer}`"
                   >
                     <v-icon> mdi-pencil</v-icon>
                   </v-btn>
-                  <v-btn elevation="0" color="error" x-small text>
+                  <v-btn elevation="0" color="error" x-small text @click="fn_delateData(r.ID_customer)">
                     <v-icon> mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -132,6 +133,7 @@
 </template>
   
 <script>
+import axios from "axios";
 export default {
   name: "InspirePage",
   data: () => ({
@@ -139,44 +141,45 @@ export default {
     countdata: 0,
     page: 1,
     total_record: 1,
-    get_loadtable: [
-      {
-        ID_customer: "0000001",
-        IDCard: "1011100033000",
-        Nickname: "แดง",
-        Prefix: "นาย",
-        Fisrtname: "น้ำแดง",
-        Lastname: "จ้า",
-        Birthday: "1997-09-09",
-        Occupation: "s",
-        Race: "s",
-        Nationality: "e",
-        religion: "",
-        status_relationship: "",
-        weight: "",
-        height: "",
-        address_number: "",
-        address_moo: "",
-        address_village: "",
-        address_soi: "",
-        address_road: "",
-        address_subdistrict: "",
-        address_district: "",
-        address_province: "",
-        postal: "",
-        tell: "0093999948",
-        email: "",
-        profile: "",
-      },
-    ],
+    desserts: [],
+    textSearch:'',
   }),
   methods: {
-    Detil() {
-      this.$router.push({
-        path: "/customer/Details",
+    async fn_getData() {
+      await axios
+        .get(`${process.env.api_url}/customer?textSearch=${this.textSearch}&IDCus=`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.desserts = res.data.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async fn_delateData(ID) {
+      let data = JSON.stringify({
+        ID: ID,
       });
+      await axios
+        .post(`${process.env.api_url}/customer/delete`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.fn_getData();
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
+  mounted(){
+    this.fn_getData()
+  }
 };
 </script>
   

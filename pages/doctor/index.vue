@@ -217,6 +217,7 @@ export default {
         ID_Doctor: "",
         Fisrtname: "",
         Lastname: "",
+        License: [],
       },
     };
   },
@@ -239,20 +240,17 @@ export default {
       if (!this.$refs.form.validate()) {
         return false;
       }
-      console.log(this.formInsert.License.length);
-     
-      
       let formData = new FormData();
 
-      this.formInsert.License.forEach(element => {
-        formData.append("fileLicense[]", element);
+      this.formInsert.License.forEach((element, index) => {
+        formData.append("fileLicense" + index, element);
       });
-      // formData.append("fileLicense", this.formInsert.License);
+      formData.append("index", this.formInsert.License.length);
       formData.append("ID_Doctor", this.formInsert.ID_Doctor);
       formData.append("Fisrtname", this.formInsert.Fisrtname);
       formData.append("Lastname", this.formInsert.Lastname);
       await axios
-        .post(`${process.env.api_url}/doctor/insert`, formData, {
+        .post(`${process.env.api_url}/ConfigCon/insert_doctor`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -276,7 +274,7 @@ export default {
       }
       await axios
         .post(
-          `${process.env.api_url}/ConfigCon/delete_doctor`,body,
+          `${process.env.api_url}/doctor/delete`,body,
           {
             headers: {
               "Content-Type": "application/json",

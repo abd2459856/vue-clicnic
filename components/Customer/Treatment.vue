@@ -2,37 +2,28 @@
   <div>
     <v-list two-line>
       <v-list-item-group active-class="pink--text">
-        <template v-for="(item, index) in items">
-          <v-list-item :key="item.title" @click="fn_ddddd">
+        <template v-for="(item, index) in groupTreatment">
+          <v-list-item :key="item.title" @click="fn_detaailTreat(item)">
             <template v-slot:default="{ active }">
+              <v-list-item-icon>
+                {{ index + 1 }}
+              </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-
-                <v-list-item-subtitle
-                  class="text--primary"
-                  v-text="item.headline"
-                ></v-list-item-subtitle>
-
-                <v-list-item-subtitle
-                  v-text="item.subtitle"
-                ></v-list-item-subtitle>
+                <v-list-item-title v-text="item.treat_name"></v-list-item-title>
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-list-item-action-text
-                  v-text="item.action"
-                ></v-list-item-action-text>
-
-                <v-icon v-if="!active" color="grey lighten-1">
-                  mdi-star-outline
-                </v-icon>
-
-                <v-icon v-else color="yellow darken-3"> mdi-star </v-icon>
+                <v-list-item-action-text>{{
+                  item.Amount
+                }}</v-list-item-action-text>
               </v-list-item-action>
             </template>
           </v-list-item>
 
-          <v-divider v-if="index < items.length - 1" :key="index"></v-divider>
+          <v-divider
+            v-if="index < groupTreatment.length - 1"
+            :key="index"
+          ></v-divider>
         </template>
       </v-list-item-group>
     </v-list>
@@ -43,9 +34,11 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card >
+      <v-card>
         <v-toolbar dark color="#212121">
-          <v-toolbar-title>HN-2023080001 - นายแดง ไบเล่</v-toolbar-title>
+          <v-toolbar-title
+            >{{ myProfile.ID_customer }} - {{ myProfile.Name }}</v-toolbar-title
+          >
           <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
             <v-icon>mdi-close</v-icon>
@@ -57,41 +50,35 @@
             <div style="height: 85vh; overflow: auto">
               <v-list two-line>
                 <v-list-item-group v-model="selectHe" active-class="pink--text">
-                  <template v-for="(item, index) in itemsub">
-                    <v-list-item :key="item.title" @change="fn_detaailHe(item)">
+                  <template v-for="(item, index) in Treatment">
+                    <v-list-item
+                      :key="item.title"
+                      @change="fn_detaailTreat(item)"
+                    >
                       <template v-slot:default="{ active }">
+                        <v-list-item-icon>
+                {{ index + 1 }}
+              </v-list-item-icon>
                         <v-list-item-content>
                           <v-list-item-title
-                            >{{ index + 1 }} &nbsp;{{
-                              item.title
-                            }}
-                            </v-list-item-title>
-
-                          <v-list-item-subtitle
-                            class="text--primary"
-                            v-text="item.headline"
-                          ></v-list-item-subtitle>
-                          <spa style="font-size: 0.875rem;color: rgb(0 0 0 / 87%);">{{ item.subtitle }}</spa>
+                            >{{ item.treat_name }}
+                          </v-list-item-title>
+                          <spa
+                            style="font-size: 0.875rem; color: rgb(0 0 0 / 87%)"
+                            >{{ item.treatmens_detail }}</spa
+                          >
                         </v-list-item-content>
 
                         <v-list-item-action>
                           <v-list-item-action-text
-                            v-text="item.action"
+                            v-text="item.Date_save"
                           ></v-list-item-action-text>
-
-                          <!-- <v-icon v-if="!active" color="grey lighten-1">
-                            mdi-star-outline
-                          </v-icon>
-
-                          <v-icon v-else color="yellow darken-3">
-                            mdi-star
-                          </v-icon> -->
                         </v-list-item-action>
                       </template>
                     </v-list-item>
 
                     <v-divider
-                      v-if="index < items.length - 1"
+                      v-if="index < Treatment.length - 1"
                       :key="index"
                     ></v-divider>
                   </template>
@@ -135,61 +122,59 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
+  props: {
+    myProfile: Object,
+  },
   data() {
     return {
-      items: [
-        {
-          action: "15 min",
-          headline: "",
-          subtitle: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-          title: "ทำจมูก",
-        },
-        {
-          action: "2 hr",
-          headline: "Summer BBQ",
-          subtitle: `Wish I could come, but I'm out of town this weekend.`,
-          title: "ทำปาก",
-        },
-        {
-          action: "6 hr",
-          headline: "Oui oui",
-          subtitle: "Do you have Paris recommendations? Have you ever been?",
-          title: "จัดฟัน",
-        },
-      ],
-      itemsub: [
-        {
-          action: "20 Apr,2022",
-          headline: "neighborhood",
-          subtitle: `I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-          title: "ทำจมูก",
-        },
-        {
-          action: "15 Apr,2022",
-          headline: "Summer BBQ",
-          subtitle: `Wish I could come, but I'm out of town this weekend.`,
-          title: "ทำจมูก",
-        },
-        {
-          action: "10 Apr,2022",
-          headline: "Oui oui",
-          subtitle: "Do you have Paris recommendations? Have you ever been?",
-          title: "ทำจมูก",
-        },
-      ],
+      groupTreatment: [],
+      Treatment: [],
       dialog: false,
       detaailHe: {},
       selectHe: null,
     };
   },
   methods: {
-    fn_ddddd() {
+    async fn_getData(idcus) {
+      await axios
+        .get(`${process.env.api_url}/treatment/group?IDCus=${idcus}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.groupTreatment = res.data.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async fn_detaailTreat(item) {
+      await axios
+        .get(`${process.env.api_url}/treatment?IDCus=${this.$route.query.idcus}&ID_treat=${item.ID_treat}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.Treatment = res.data.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+
       this.dialog = true;
     },
-    fn_detaailHe(item) {
-      this.detaailHe = item;
-    },
+    // fn_detaailTreat(item) {
+    //   this.detaailHe = item;
+    // },
+  },
+  async mounted() {
+    if (this.$route.query.idcus) {
+      await this.fn_getData(this.$route.query.idcus);
+    }
   },
 };
 </script>

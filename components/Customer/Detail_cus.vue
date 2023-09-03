@@ -108,7 +108,36 @@ legend {
           <div class="font-weight-bold">วันเกิด :</div>
         </v-col>
         <v-col md="4" sm="12" cols="12" class="pb-0">
-          <v-text-field
+          <v-menu
+            v-model="menu"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                prepend-inner-icon="mdi-calendar"
+                v-bind="attrs"
+                v-on="on"
+                class="costomgray"
+                solo
+                flat
+                dense
+                hide-details
+                readonly
+                :disabled="ReadOn"
+                v-model="myDetail.Birthday"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="myDetail.Birthday"
+              color="deep-orange"
+              @input="menu = false"
+            ></v-date-picker>
+          </v-menu>
+          <!-- <v-text-field
             class="costomgray"
             solo
             flat
@@ -116,7 +145,7 @@ legend {
             hide-details
             :readonly="ReadOn"
             v-model="myDetail.Birthday"
-          ></v-text-field>
+          ></v-text-field> -->
         </v-col>
         <v-col md="2" sm="12" cols="12" class="pb-0">
           <div class="font-weight-bold">อายุ :</div>
@@ -386,14 +415,14 @@ legend {
 </template>
 <script>
 export default {
-  props:{
-    ReadOn:Boolean,
-    myDetail:Object,
+  props: {
+    ReadOn: Boolean,
+    myDetail: Object,
   },
   data() {
     return {
       tab: 0,
-      
+      menu: false,
     };
   },
 };

@@ -13,7 +13,7 @@
         </v-chip>
         <v-spacer />
         <div class="text-center">
-          <v-btn text color="success" @click="dialog = true">
+          <v-btn text color="success" @click="fn_addNut">
             <v-icon>mdi-calendar-plus-outline</v-icon> เพิ่มนัด
           </v-btn>
         </div>
@@ -30,16 +30,71 @@
                 dense
                 placeholder="รหัสลูกค้า ชื่อ-นามสกุล หรือ แพทย์"
                 hide-details
+                v-model="formSearch.textSearch"
               ></v-text-field>
             </v-col>
             <v-col md="2">
-              <Vmenu :vdate="dateStart" :label="'ตั้งแต่วันที่'" />
+              <v-menu
+                v-model="menuStart"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="formSearch.dateStart"
+                    label="ตั้งแต่วันที่"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                    dense
+                    hide-details
+                    class="costomgray"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="formSearch.dateStart"
+                  color="deep-orange"
+                  @input="menuStart = false"
+                ></v-date-picker>
+              </v-menu>
             </v-col>
             <v-col md="2">
-              <Vmenu :vdate="dateStart" :label="'ถึงวันที่'" />
+              <v-menu
+                v-model="menuEnd"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="formSearch.dateEnd"
+                    label="ตั้งแต่วันที่"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                    dense
+                    hide-details
+                    class="costomgray"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="formSearch.dateEnd"
+                  color="deep-orange"
+                  @input="menuEnd = false"
+                ></v-date-picker>
+              </v-menu>
             </v-col>
             <v-col md="1">
-              <v-btn elevation="0" color="primary">
+              <v-btn elevation="0" color="primary" @click="fn_getData()">
                 <v-icon>mdi-magnify</v-icon>
                 ค้นหา
               </v-btn>
@@ -129,20 +184,28 @@
                 };`"
               >
                 <td class="text-center">{{ i + 1 }}</td>
-                <td class="text-left">{{ item.ID_Customer }}</td>
+                <td class="text-left">{{ item.ID_customer }}</td>
                 <td class="text-left">
-                  <v-avatar size="30">
-                    <img
-                      src="https://cdn.vuetifyjs.com/images/john.jpg"
-                      alt="John"
-                    />
-                  </v-avatar>
-                  <span class="pl-3">{{ item.name }}</span>
+                  <v-btn
+                    icon
+                    :to="`/customer/profile?type=detail&idcus=${item.ID_customer}`"
+                  >
+                    <v-avatar size="30">
+                      <img
+                        src="https://cdn.vuetifyjs.com/images/john.jpg"
+                        alt="John"
+                      />
+                    </v-avatar>
+                  </v-btn>
+                  <span class="pl-3">{{ item.C_Name }}</span>
                 </td>
-                <td class="text-left">{{ item.Doctor_name }}</td>
-                <td class="text-left">{{ item.Status }}</td>
+                <td class="text-left">{{ item.D_Name }}</td>
+                <td class="text-left">{{ item.Status_nut }}</td>
                 <td class="text-left">
-                  {{ DateFormat(item.Date_nut, "HH:mm A") }}
+                  {{ DateFormat(item.Date_nut, "DD-MM-YYYY") }}
+                  <span style="color: grey">
+                    {{ DateFormat(item.Date_nut, "HH:mm A") }}</span
+                  >
                 </td>
                 <td class="text-left">
                   <v-btn
@@ -150,7 +213,10 @@
                     color="error"
                     small
                     text
-                    @click="dialogEdit = true"
+                    @click="
+                      FormEdit.ID_nut = item.ID_nut;
+                      dialogEdit = true;
+                    "
                   >
                     <v-icon>mdi-text-box-edit</v-icon>
                   </v-btn>
@@ -206,117 +272,8 @@
         </v-simple-table>
       </v-card-text>
     </v-card>
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-card >
-        <v-card-title>
-          <span class="text-h5"
-            ><v-icon>mdi-calendar-plus-outline</v-icon> เพิ่มนัด</span
-          >
-        </v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col md="6" sm="12" cols="12">
-              <Vmenu ref="" :vdate="FormAdd.Date_nut" :label="'วันที่'" />
-            </v-col>
-          </v-row>
-          <v-row class="pb-3">
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="เริ่มเวลา"
-                outlined
-                dense
-                hide-details
-                type="time"
-              ></v-text-field>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="สิ้นสุด"
-                outlined
-                dense
-                hide-details
-                type="time"
-              ></v-text-field>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-select
-                outlined
-                dense
-                hide-details
-                placeholder="-----เลือกแพทย์-----"
-                :items="['-----เลือกแพทย์-----']"
-              ></v-select>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-select
-                outlined
-                dense
-                hide-details
-                placeholder="----- ห้อง -----"
-                :items="['-----เลือกห้อง-----']"
-              ></v-select>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-select
-                outlined
-                dense
-                hide-details
-                placeholder="----- เลือกหมายเหตุ -----"
-                :items="['-----เลือกหมายเหตุ-----']"
-              ></v-select>
-            </v-col>
-            <v-col md="12" sm="12" cols="12">
-              <v-textarea
-                outlined
-                dense
-                hide-details
-                label="หมายเหตุ"
-                rows="3"
-              ></v-textarea>
-            </v-col>
-          </v-row>
-          <v-divider />
-          <v-row class="pt-3">
-            <v-col md="6" sm="12" cols="12">
-              <v-autocomplete
-                :items="CoustomerOP"
-                placeholder="ชื่อ หรือ รหัส คนไข้"
-                outlined
-                dense
-                hide-details
-              ></v-autocomplete>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="ชื่อคนไข้"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="เบอร์โทร"
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <DailogNut ref="dailognut" @getdata="fn_getData"></DailogNut>
+
     <v-dialog v-model="dialogEdit" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -333,12 +290,40 @@
                 hide-details
                 label="เลือก"
                 :items="['เลื่อนนัด', 'ยกเลิก']"
+                v-model="FormEdit.Status_nut"
               ></v-select>
             </v-col>
           </v-row>
           <v-row>
             <v-col md="6" sm="12" cols="12">
-              <Vmenu ref="" :vdate="FormEdit.Date_nut" :label="'วันที่'" />
+              <v-menu
+                v-model="menuEdit"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="FormEdit.Date_nut"
+                    label="วันที่"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                    dense
+                    hide-details
+                    class="costomgray"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="FormEdit.Date_nut"
+                  color="deep-orange"
+                  @input="menuEdit = false"
+                ></v-date-picker>
+              </v-menu>
             </v-col>
           </v-row>
           <v-row class="pb-3">
@@ -349,6 +334,7 @@
                 dense
                 hide-details
                 type="time"
+                v-model="FormEdit.start_time"
               ></v-text-field>
             </v-col>
             <v-col md="6" sm="12" cols="12">
@@ -358,35 +344,9 @@
                 dense
                 hide-details
                 type="time"
+                v-model="FormEdit.end_time"
               ></v-text-field>
             </v-col>
-            <!-- <v-col md="6" sm="12" cols="12">
-              <v-select
-                outlined
-                dense
-                hide-details
-                placeholder="-----เลือกแพทย์-----"
-                :items="['-----เลือกแพทย์-----']"
-              ></v-select>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-select
-                outlined
-                dense
-                hide-details
-                placeholder="----- ห้อง -----"
-                :items="['-----เลือกห้อง-----']"
-              ></v-select>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-select
-                outlined
-                dense
-                hide-details
-                placeholder="----- เลือกหมายเหตุ -----"
-                :items="['-----เลือกหมายเหตุ-----']"
-              ></v-select>
-            </v-col> -->
             <v-col md="12" sm="12" cols="12">
               <v-textarea
                 outlined
@@ -394,6 +354,7 @@
                 hide-details
                 label="หมายเหตุ"
                 rows="3"
+                v-model="FormEdit.Remark"
               ></v-textarea>
             </v-col>
           </v-row>
@@ -403,9 +364,7 @@
           <v-btn color="blue darken-1" text @click="dialogEdit = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialogEdit = false">
-            Save
-          </v-btn>
+          <v-btn color="blue darken-1" text @click="fn_updateNut"> Save </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -413,228 +372,164 @@
 </template>
 
 <script>
+import axios from "axios";
 import Vmenu from "@/components/Vmenu";
+import DailogNut from "@/components/Sub/DailogNut";
 export default {
   name: "IndexPage",
   components: {
     Vmenu,
+    DailogNut,
   },
   data() {
     return {
-      dateStart: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
-      dateEnd: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
       menuDailog: false,
+      menuStart: false,
+      menuEnd: false,
+      menuEdit: false,
       dialog: false,
       dialogEdit: false,
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          ID_Customer: 159,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Ice cream sandwich",
-          ID_Customer: 237,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Eclair",
-          ID_Customer: 262,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Cupcake",
-          ID_Customer: 305,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Gingerbread",
-          ID_Customer: 356,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Jelly bean",
-          ID_Customer: 375,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Lollipop",
-          ID_Customer: 392,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Honeycomb",
-          ID_Customer: 408,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "Donut",
-          ID_Customer: 452,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-        {
-          name: "KitKat",
-          ID_Customer: 518,
-          Doctor_name: "john wick",
-          Status: "",
-          Date_nut: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          ),
-          Date_come: "",
-          Date_inspect: "",
-          Date_finish: "",
-          Remark: "",
-        },
-      ],
-      FormAdd: {
-        Date_nut: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .substr(0, 10),
-      },
+
+      desserts: [],
       FormEdit: {
         Date_nut: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
           .toISOString()
           .substr(0, 10),
+        Status_nut: "",
+        start_time: "",
+        end_time: "",
+        Remark: "",
+        ID_nut: "",
       },
-      CoustomerOP: [
-        {
-          text: "Frozen Yogurt",
-          value: 159,
-        },
-        {
-          text: "Ice cream sandwich",
-          value: 237,
-        },
-        {
-          text: "Eclair",
-          value: 262,
-        },
-        {
-          text: "Cupcake",
-          value: 305,
-        },
-        {
-          text: "Gingerbread",
-          value: 356,
-        },
-        {
-          text: "Jelly bean",
-          value: 375,
-        },
-        {
-          text: "Lollipop",
-          value: 392,
-        },
-        {
-          text: "Honeycomb",
-          value: 408,
-        },
-        {
-          text: "Donut",
-          value: 452,
-        },
-        {
-          text: "KitKat",
-          value: 518,
-        },
-      ],
+      textSearch: "",
+      formSearch: {
+        textSearch: "",
+        dateStart: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10),
+        dateEnd: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10),
+      },
     };
   },
   methods: {
-    fn_CustomerCome(item) {
+    async fn_getData() {
+      await axios
+        .get(`${process.env.api_url}/appointment`, {
+          params: this.formSearch,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.desserts = res.data.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    fn_addNut() {
+      this.$refs.dailognut.open();
+    },
+
+    async fn_CustomerCome(item) {
       item.Date_come = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
-      );
+      )
+        .toISOString();
+      item.Status_nut = "มาถึง";
+      let data = JSON.stringify({
+        Date_come: item.Date_come,
+        Status_nut: item.Status_nut,
+        ID_nut: item.ID_nut,
+      });
+      await axios
+        .post(`${process.env.api_url}/appointment/update`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.dialog = false;
+          this.$emit("getdata");
+        })
+        .catch((err) => {
+          alert(err);
+        });
       // alert(item)
     },
-    fn_CustomerInspect(item) {
+    async fn_CustomerInspect(item) {
       item.Date_inspect = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
-      );
+      )
+        .toISOString();
+      item.Status_nut = "เข้าตรวจ";
+      let data = JSON.stringify({
+        Date_inspect: item.Date_come,
+        Status_nut: item.Status_nut,
+        ID_nut: item.ID_nut,
+      });
+      await axios
+        .post(`${process.env.api_url}/appointment/update`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.dialog = false;
+          this.$emit("getdata");
+        })
+        .catch((err) => {
+          alert(err);
+        });
       // alert(item)
     },
-    fn_CustomerFinish(item) {
+    async fn_CustomerFinish(item) {
       item.Date_finish = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
-      );
+      )
+        .toISOString();
+      item.Status_nut = "ตรวจเสร็จ";
+      let data = JSON.stringify({
+        Date_finish: item.Date_come,
+        Status_nut: item.Status_nut,
+        ID_nut: item.ID_nut,
+      });
+      await axios
+        .post(`${process.env.api_url}/appointment/update`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.dialog = false;
+          this.$emit("getdata");
+        })
+        .catch((err) => {
+          alert(err);
+        });
       // alert(item)
     },
+    async fn_updateNut() {
+      let data = JSON.stringify(this.FormEdit);
+      await axios
+        .post(`${process.env.api_url}/appointment/update`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.dialog = false;
+          this.$emit("getdata");
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+  },
+  mounted() {
+    this.fn_getData();
   },
 };
 </script>

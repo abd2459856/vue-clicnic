@@ -21,27 +21,26 @@
           </div>
           <v-card elevation="0" style="margin-top: -100px !important">
             <v-card-text style="padding-top: 130px" class="pl-10">
-              <h1 align="center" class="font-weight-bold pb-5">Maaa Abideen</h1>
+              <h1 align="center" class="font-weight-bold pb-5">{{myProfile.Nickname}}</h1>
               <p>
-                <v-icon color="#D4AF37" small>mdi-account</v-icon>&nbsp; นายแดง
-                ไบเล่
+                <v-icon color="#D4AF37" small>mdi-account</v-icon>&nbsp; {{myProfile.Name}}
               </p>
               <p>
                 <v-icon color="#D4AF37" small>mdi-id-card</v-icon>&nbsp;
-                HN-2023080001
+                {{myProfile.ID_customer}}
               </p>
               <p>
                 <v-icon color="#D4AF37" small>mdi-email</v-icon>&nbsp;
-                aliconnors@example.com
+               {{ myProfile.email}}
               </p>
               <p>
                 <v-icon color="#D4AF37" small>mdi-phone</v-icon>&nbsp;
-                088-888-8888
+                {{ myProfile.tell}}
               </p>
 
               <p>
                 <v-icon color="#D4AF37" small>mdi-calendar</v-icon>&nbsp;
-                มาครั้งล่าสุด 28/08/2566
+                มาครั้งล่าสุด {{ DateFormat(myProfile.Date_nut,'DD-MM-YYYY')}}
               </p>
             </v-card-text>
           </v-card>
@@ -67,16 +66,19 @@
                 <v-card-actions
                   class="justify-center"
                   v-if="$route.query.type != 'detail'"
-                  @click="fn_savecustomer"
+                  
                 >
-                  <v-btn color="success" elevation="0">
+                  <v-btn color="success" elevation="0" @click="fn_savecustomer" v-if="$route.query.type == 'add'">
+                    <v-icon> mdi-content-save </v-icon>บันทึก
+                  </v-btn>
+                  <v-btn color="success" elevation="0" @click="fn_upadatecustomer" v-if="$route.query.type == 'edit'">
                     <v-icon> mdi-content-save </v-icon>บันทึก
                   </v-btn>
                 </v-card-actions>
               </v-tab-item>
               <v-tab-item>
                 <v-card-text>
-                  <Treatment></Treatment>
+                  <Treatment v-bind:myProfile="myProfile"></Treatment>
                 </v-card-text>
               </v-tab-item>
             </v-tabs-items>
@@ -88,6 +90,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Detail_cus from "@/components/Customer/Detail_cus";
 import Treatment from "@/components/Customer/Treatment";
 export default {
@@ -100,15 +103,56 @@ export default {
     return {
       tab: 0,
       myDetail: {},
+      myProfile: {},
     };
   },
   methods: {
-    async fn_savecustomer() {
-      let data = JSON.stringify({
-        ID: ID,
-      });
+    async fn_getprofile(idcus) {
       await axios
-        .post(`${process.env.api_url}/ConfigCon/delete_doctor`, data, {
+        .get(`${process.env.api_url}/customer/profile?IDCus=${idcus}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.myProfile = res.data.data[0];
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async fn_getCustomer(idcus) {
+      await axios
+        .get(`${process.env.api_url}/customer?textSearch=&IDCus=${idcus}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.myDetail = res.data.data[0];
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async fn_savecustomer() {
+      let data = JSON.stringify(this.myDetail);
+      await axios
+        .post(`${process.env.api_url}/customer/insert`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async fn_upadatecustomer() {
+      let data = JSON.stringify(this.myDetail);
+      await axios
+        .post(`${process.env.api_url}/customer/update`, data, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -137,8 +181,11 @@ export default {
         });
     },
   },
-  mounted() {
-    console.log(this.$route.query);
+  async mounted() {
+    if(this.$route.query.idcus){
+     await this.fn_getCustomer(this.$route.query.idcus)
+     await this.fn_getprofile(this.$route.query.idcus)
+    }
   },
 };
 </script>

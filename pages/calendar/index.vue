@@ -64,40 +64,40 @@ export default {
         },
         async getEvents({ start, end }) {
             const events = []
-            // let { data } = await axios
-            //     .get(`http://localhost/api-myClinic/index.php/Welcome/get_rendezvous`, {
+            let { data } = await axios
+                .get(`${process.env.api_url}/Welcome/get_rendezvous?id=`, {
 
-            //     })
-            //     .catch((err) => {
-            //         alert(err)
-            //     });
-            // for (let i = 0; i < data.result.length; i++) {
-            //     console.log(data.result[i].Fisrtname);
+                })
+                .catch((err) => {
+                    alert(err)
+                });
+            for (let i = 0; i < data.result.length; i++) {
+                console.log(data.result[i].Fisrtname);
+                events.push({
+                    name: data.result[i].Fisrtname + ' ' + data.result[i].Yogurt,
+                    start: data.result[i].Savedate,
+                    end: data.result[i].Savedate,
+                    color: this.colors[this.rnd(0, this.colors.length - 1)],
+                })
                 // events.push({
-                //     name: data.result[i].Fisrtname + ' ' + data.result[i].Yogurt,
-                //     start: data.result[i].Savedate,
-                //     end: data.result[i].Savedate,
+                //     name: 'Frozen Yogurt ทำจมูก',
+                //     start: '2023-09-02',
+                //     end: '2023-09-02',
                 //     color: this.colors[this.rnd(0, this.colors.length - 1)],
                 // })
-                events.push({
-                    name: 'Frozen Yogurt ทำจมูก',
-                    start: '2023-09-02',
-                    end: '2023-09-02',
-                    color: this.colors[this.rnd(0, this.colors.length - 1)],
-                })
-                events.push({
-                    name: 'Ice cream sandwich ทำจมูก',
-                    start: '2023-09-02',
-                    end: '2023-09-02',
-                    color: this.colors[this.rnd(0, this.colors.length - 1)],
-                })
-                events.push({
-                    name: 'Eclair ทำปาก',
-                    start: '2023-09-02',
-                    end: '2023-09-02',
-                    color: this.colors[this.rnd(0, this.colors.length - 1)],
-                })
-            // }
+                // events.push({
+                //     name: 'Ice cream sandwich ทำจมูก',
+                //     start: '2023-09-02',
+                //     end: '2023-09-02',
+                //     color: this.colors[this.rnd(0, this.colors.length - 1)],
+                // })
+                // events.push({
+                //     name: 'Eclair ทำปาก',
+                //     start: '2023-09-02',
+                //     end: '2023-09-02',
+                //     color: this.colors[this.rnd(0, this.colors.length - 1)],
+                // })
+            }
             this.events = events
         },
         getEventColor(event) {
