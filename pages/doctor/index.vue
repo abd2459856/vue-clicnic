@@ -79,7 +79,7 @@
                   <v-btn elevation="0" color="warning" x-small text @click="Edtil_doctor(item.id)">
                     <v-icon> mdi-pencil</v-icon>
                   </v-btn>
-                  <v-btn elevation="0" @click="fn_delateData(item.ID)" color="error" x-small text>
+                  <v-btn elevation="0" @click="fn_delateData(item.id)" color="error" x-small text>
                     <v-icon> mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -224,7 +224,7 @@ export default {
         });
     },
     async fn_EdtilData() {
-   
+
       if (this.$refs.form.validate()) {
         let formData = new FormData();
         formData.append("ID_Doctor", this.formInsert.ID_Doctor);
@@ -252,12 +252,11 @@ export default {
       }
     },
     async fn_delateData(ID) {
-      let body = {
-        ID: ID
-      }
+      let formData = new FormData();
+      formData.append("ID", ID);
       await axios
         .post(
-          `${process.env.api_url}/doctor/delete`, body,
+          `${process.env.api_url}/ConfigCon/delete_doctor`, formData,
           {
             headers: {
               "Content-Type": "application/json",
