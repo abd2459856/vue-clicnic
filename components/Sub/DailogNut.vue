@@ -182,6 +182,7 @@ export default {
   },
   methods: {
     async fn_dropdownCus() {
+      this.CoustomerOP=[];
       await axios
         .get(`${process.env.api_url}/customer?textSearch=&IDCus=`, {
           headers: {
@@ -206,7 +207,7 @@ export default {
     },
     async fn_dropdownDoctor() {
       await axios
-        .get(`${process.env.api_url}/doctor?textSearch=`, {
+        .get(`${process.env.api_url}/doctor?textSearch=&ID=`, {
           headers: {
             "Content-Type": "application/json",
           },
