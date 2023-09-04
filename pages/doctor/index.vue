@@ -76,10 +76,10 @@
                 </td>
                 <td class="text-left">{{ item.Status }}</td>
                 <td class="text-left">
-                  <v-btn elevation="0" color="warning" x-small text @click="Edtil_doctor(item.id)">
+                  <v-btn elevation="0" color="warning" x-small text @click="Edtil_doctor(item.ID)">
                     <v-icon> mdi-pencil</v-icon>
                   </v-btn>
-                  <v-btn elevation="0" @click="fn_delateData(item.id)" color="error" x-small text>
+                  <v-btn elevation="0" @click="fn_delateData(item.ID)" color="error" x-small text>
                     <v-icon> mdi-delete</v-icon>
                   </v-btn>
                 </td>
@@ -152,22 +152,21 @@ export default {
         Fisrtname: "",
         Lastname: "",
         License: [],
-        id: 0,
+        ID: 0,
       },
       type: 1,
     };
   },
   methods: {
-    async Edtil_doctor(id) {
+    async Edtil_doctor(ID) {
       await axios
-        .get(`${process.env.api_url}/doctor?id=${id}&textSearch=`, {
+        .get(`${process.env.api_url}/doctor?ID=${ID}&textSearch=`, {
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then((res) => {
           this.formInsert = res.data.data[0];
-          // this.formInsert.id = res.data.data[0].id;
           this.type = 2;
           this.dialog = true;
         })
@@ -177,7 +176,7 @@ export default {
     },
     async fn_getData() {
       await axios
-        .get(`${process.env.api_url}/doctor?id=&textSearch=${this.textSearch}`, {
+        .get(`${process.env.api_url}/doctor?ID=&textSearch=${this.textSearch}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -228,7 +227,7 @@ export default {
         formData.append("ID_Doctor", this.formInsert.ID_Doctor);
         formData.append("Fisrtname", this.formInsert.Fisrtname);
         formData.append("Lastname", this.formInsert.Lastname);
-        formData.append("id", this.formInsert.id);
+        formData.append("ID", this.formInsert.ID);
         await axios
           .post(`${process.env.api_url}/ConfigCon/update_doctor`, formData, {
             headers: {

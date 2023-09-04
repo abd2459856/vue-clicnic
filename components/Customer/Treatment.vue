@@ -1,6 +1,10 @@
 <template>
   <div>
-
+    <div class="">
+      <v-btn text color="success" @click="dialog_img = true; Treatment_item = item">
+        <v-icon>mdi-image-edit</v-icon> เพิ่มรูป
+      </v-btn>
+    </div>
     <v-list two-line>
       <v-list-item-group active-class="pink--text">
         <template v-for="(item, index) in groupTreatment">
@@ -12,7 +16,6 @@
               <v-list-item-content>
                 <v-list-item-title v-text="item.treat_name"></v-list-item-title>
               </v-list-item-content>
-
               <v-list-item-action>
                 <v-list-item-action-text>{{
                   item.Amount
@@ -25,7 +28,6 @@
         </template>
       </v-list-item-group>
     </v-list>
-
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
         <v-toolbar dark color="#212121">
@@ -138,12 +140,8 @@ export default {
       dialog_img: false,
       Img: [],
       ID_nut: 0,
-      groupTreatment: [
-        { Amount: 10, treat_name: "dd", title: 'ดดด' }
-      ],
-      Treatment: [
-        { Date_save: "02/09/2566", treatmens_detail: '444', treat_name: 'sdfdsf', title: 'sdf', ID_nut: 1, ID_treat: 1, ID_package: 1, ID_customer: 1 }
-      ],
+      groupTreatment: [],
+      Treatment: [],
       dialog: false,
       detaailHe: {},
       selectHe: null,
