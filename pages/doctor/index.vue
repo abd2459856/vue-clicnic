@@ -92,22 +92,24 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="text-h5"><v-icon>mdi-calendar-plus-outline</v-icon> เพิ่มแพทย์</span>
+          <span class="text-h5" v-if="type == 1"><v-icon>mdi-calendar-plus-outline</v-icon> เพิ่มแพทย์</span>
+          <span class="text-h5" v-else><v-icon>mdi-calendar-plus-outline</v-icon> แก้ไขแพทย์</span>
         </v-card-title>
         <v-card-text>
           <v-form ref="form" lazy-validation>
             <v-row>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field label="รหัส" outlined dense hide-details v-model="formInsert.ID_Doctor"></v-text-field>
+                <v-text-field label="รหัส" outlined dense hide-details v-model="formInsert.ID_Doctor"
+                  :rules="[(v) => !!v || '']" required></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field label="ชื่อ" outlined dense hide-details :rules="[(v) => !!v || '']"
+                <v-text-field label="ชื่อ" outlined dense hide-details :rules="[(v) => !!v || '']" required
                   v-model="formInsert.Fisrtname"></v-text-field>
               </v-col>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field label="นามสกุล" outlined dense hide-details :rules="[(v) => !!v || '']"
+                <v-text-field label="นามสกุล" outlined dense hide-details :rules="[(v) => !!v || '']" required
                   v-model="formInsert.Lastname"></v-text-field>
               </v-col>
             </v-row>
@@ -132,15 +134,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <ConfirmDlg ref="confirm" />
   </div>
 </template>
 <script>
 import axios from "axios";
 import Vmenu from "@/components/Vmenu";
+import ConfirmDlg from "@/components/ConfirmDlg.vue";
 export default {
   name: "IndexPage",
   components: {
     Vmenu,
+    ConfirmDlg
   },
   data() {
     return {
@@ -190,6 +195,11 @@ export default {
     },
     async fn_insertData() {
       if (!this.$refs.form.validate()) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
         return false;
       }
       let formData = new FormData();
@@ -208,20 +218,27 @@ export default {
           },
         })
         .then((res) => {
+          this.$refs.confirm.dailogalert("เพิ่มข้อมูลเรียบร้อย", ``, {
+            icon: "success",
+            color: "success",
+            btnCanceltext: "ตกลง",
+          });
           this.dialog = false;
           this.fn_getData();
-          // this.$refs.confirm.dailogalert("เพิ่มค่าใช้จ่ายเรียบร้อย", ``, {
-          //   icon: "success",
-          //   color: "success",
-          //   btnCanceltext: "ตกลง",
-          // });
         })
         .catch((err) => {
           alert(err);
         });
     },
     async fn_EdtilData() {
-
+      if (!this.$refs.form.validate()) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       if (this.$refs.form.validate()) {
         let formData = new FormData();
         formData.append("ID_Doctor", this.formInsert.ID_Doctor);
@@ -235,13 +252,13 @@ export default {
             },
           })
           .then((res) => {
-            this.dialog = false;
-            this.fn_getData();
-            // this.$refs.confirm.dailogalert("เพิ่มค่าใช้จ่ายเรียบร้อย", ``, {
-            //   icon: "success",
-            //   color: "success",
-            //   btnCanceltext: "ตกลง",
-            // });
+            this.$refs.confirm.dailogalert("เเก้ไขข้อมูลเรียบร้อย", ``, {
+            icon: "success",
+            color: "success",
+            btnCanceltext: "ตกลง",
+          });
+          this.dialog = false;
+          this.fn_getData();
           })
           .catch((err) => {
             alert(err);
