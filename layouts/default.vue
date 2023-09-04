@@ -49,12 +49,24 @@
       </v-container>
     </v-main>
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light> mdi-repeat </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+      <v-list nav dense>
+        <v-list-item
+          to="/config/package_treat"
+          router
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>หัวข้อการรักษา</v-list-item-title>
+        </v-list-item>
+        <v-list-item
+          to="/config/room_treat"
+          router
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>ห้องรักษา</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

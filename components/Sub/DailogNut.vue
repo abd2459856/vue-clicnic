@@ -40,7 +40,6 @@
             <!-- <Vmenu  v-bind:vdate="FormAdd.Date_nut" :label="'วันที่'" /> -->
           </v-col>
         </v-row>
-        {{ FormAdd.Date_nut }}
         <v-row class="pb-3">
           <v-col md="6" sm="12" cols="12">
             <v-text-field
@@ -226,7 +225,7 @@ export default {
     },
     async fn_dropdownRoom() {
       await axios
-        .get(`${process.env.api_url}/room`, {
+        .get(`${process.env.api_url}/room?textSearch=`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -245,7 +244,7 @@ export default {
     },
     async fn_dropdownPackage() {
       await axios
-        .get(`${process.env.api_url}/package`, {
+        .get(`${process.env.api_url}/package?textSearch=`, {
           headers: {
             "Content-Type": "application/json",
           },

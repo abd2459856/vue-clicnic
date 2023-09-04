@@ -282,82 +282,86 @@
           >
         </v-card-title>
         <v-card-text>
-          <v-row>
-            <v-col md="6" sm="12" cols="12">
-              <v-select
-                outlined
-                dense
-                hide-details
-                label="เลือก"
-                :items="['เลื่อนนัด', 'ยกเลิก']"
-                v-model="FormEdit.Status_nut"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col md="6" sm="12" cols="12">
-              <v-menu
-                v-model="menuEdit"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
+          <v-form ref="forms" lazy-validation>
+            <v-row>
+              <v-col md="6" sm="12" cols="12">
+                <v-select
+                  outlined
+                  dense
+                  hide-details
+                  label="เลือก"
+                  :items="['เลื่อนนัด', 'ยกเลิก']"
+                  v-model="FormEdit.Status_nut"
+                  :rules="[(v) => !!v || '']"
+                  required
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="6" sm="12" cols="12">
+                <v-menu
+                  v-model="menuEdit"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="FormEdit.Date_nut"
+                      label="วันที่"
+                      prepend-inner-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      outlined
+                      dense
+                      hide-details
+                      class="costomgray"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
                     v-model="FormEdit.Date_nut"
-                    label="วันที่"
-                    prepend-inner-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                    outlined
-                    dense
-                    hide-details
-                    class="costomgray"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="FormEdit.Date_nut"
-                  color="deep-orange"
-                  @input="menuEdit = false"
-                ></v-date-picker>
-              </v-menu>
-            </v-col>
-          </v-row>
-          <v-row class="pb-3">
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="เริ่มเวลา"
-                outlined
-                dense
-                hide-details
-                type="time"
-                v-model="FormEdit.start_time"
-              ></v-text-field>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="สิ้นสุด"
-                outlined
-                dense
-                hide-details
-                type="time"
-                v-model="FormEdit.end_time"
-              ></v-text-field>
-            </v-col>
-            <v-col md="12" sm="12" cols="12">
-              <v-textarea
-                outlined
-                dense
-                hide-details
-                label="หมายเหตุ"
-                rows="3"
-                v-model="FormEdit.Remark"
-              ></v-textarea>
-            </v-col>
-          </v-row>
+                    color="deep-orange"
+                    @input="menuEdit = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+            <v-row class="pb-3">
+              <v-col md="6" sm="12" cols="12">
+                <v-text-field
+                  label="เริ่มเวลา"
+                  outlined
+                  dense
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.start_time"
+                ></v-text-field>
+              </v-col>
+              <v-col md="6" sm="12" cols="12">
+                <v-text-field
+                  label="สิ้นสุด"
+                  outlined
+                  dense
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.end_time"
+                ></v-text-field>
+              </v-col>
+              <v-col md="12" sm="12" cols="12">
+                <v-textarea
+                  outlined
+                  dense
+                  hide-details
+                  label="หมายเหตุ"
+                  rows="3"
+                  v-model="FormEdit.Remark"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -368,18 +372,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <ConfirmDlg ref="confirm" />
   </div>
 </template>
-
 <script>
 import axios from "axios";
 import Vmenu from "@/components/Vmenu";
 import DailogNut from "@/components/Sub/DailogNut";
+import ConfirmDlg from "@/components/ConfirmDlg.vue";
 export default {
   name: "IndexPage",
   components: {
     Vmenu,
     DailogNut,
+    ConfirmDlg,
   },
   data() {
     return {
@@ -416,7 +422,7 @@ export default {
   methods: {
     async fn_getData() {
       await axios
-        .get(`${process.env.api_url}/appointment`, {
+        .get(`${process.env.api_url}/Appointment_con/get_appointment`, {
           params: this.formSearch,
           headers: {
             "Content-Type": "application/json",
@@ -436,8 +442,7 @@ export default {
     async fn_CustomerCome(item) {
       item.Date_come = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString();
+      ).toISOString();
       item.Status_nut = "มาถึง";
       let data = JSON.stringify({
         Date_come: item.Date_come,
@@ -462,8 +467,7 @@ export default {
     async fn_CustomerInspect(item) {
       item.Date_inspect = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString();
+      ).toISOString();
       item.Status_nut = "เข้าตรวจ";
       let data = JSON.stringify({
         Date_inspect: item.Date_come,
@@ -488,8 +492,7 @@ export default {
     async fn_CustomerFinish(item) {
       item.Date_finish = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString();
+      ).toISOString();
       item.Status_nut = "ตรวจเสร็จ";
       let data = JSON.stringify({
         Date_finish: item.Date_come,
@@ -512,6 +515,14 @@ export default {
       // alert(item)
     },
     async fn_updateNut() {
+      // if (!this.$refs.forms.validate()) {
+      //   this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+      //     icon: "error",
+      //     color: "error",
+      //     btnCanceltext: "ตกลง",
+      //   });
+      //   return false;
+      // }
       let data = JSON.stringify(this.FormEdit);
       await axios
         .post(`${process.env.api_url}/appointment/update`, data, {
@@ -520,6 +531,11 @@ export default {
           },
         })
         .then((res) => {
+          this.$refs.confirm.dailogalert("แก้ไขสำเร็จ", ``, {
+            icon: "success",
+            color: "success",
+            btnCanceltext: "ตกลง",
+          });
           this.dialog = false;
           this.$emit("getdata");
         })
@@ -529,7 +545,13 @@ export default {
     },
   },
   mounted() {
-    this.fn_getData();
+    try {
+      if (this.$route.query.Date) {
+        this.formSearch.dateEnd = this.$route.query.Date;
+        this.formSearch.dateStart = this.$route.query.Date;
+      }
+      this.fn_getData();
+    } catch {}
   },
 };
 </script>

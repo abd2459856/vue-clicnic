@@ -49,10 +49,10 @@ export default {
             const open = () => {
                 this.selectedEvent = event
                 this.selectedElement = nativeEvent.target
-                this.$router.push({
-                    path: "/",
-                    query: { Date: this.selectedEvent.end },
-                });
+                // this.$router.push({
+                //     path: "/",
+                //     query: { Date: this.DateFormat(this.selectedEvent.end,'YYYY-MM-DD') },
+                // });
             }
             if (this.selectedOpen) {
                 this.selectedOpen = false
@@ -65,38 +65,20 @@ export default {
         async getEvents({ start, end }) {
             const events = []
             let { data } = await axios
-                .get(`${process.env.api_url}/Welcome/get_rendezvous?id=`, {
+                .get(`${process.env.api_url}/Welcome/get_rendezvous?ID_nut=`, {
 
                 })
                 .catch((err) => {
                     alert(err)
                 });
+                console.log(data.result)
             for (let i = 0; i < data.result.length; i++) {
-                console.log(data.result[i].Fisrtname);
                 events.push({
-                    name: data.result[i].Fisrtname + ' ' + data.result[i].Yogurt,
-                    start: data.result[i].Savedate,
-                    end: data.result[i].Savedate,
+                    name: data.result[i].Fisrtname+''+data.result[i].Lastname,
+                    start: data.result[i].Date_nut,
+                    end: data.result[i].Date_nut,
                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                 })
-                // events.push({
-                //     name: 'Frozen Yogurt ทำจมูก',
-                //     start: '2023-09-02',
-                //     end: '2023-09-02',
-                //     color: this.colors[this.rnd(0, this.colors.length - 1)],
-                // })
-                // events.push({
-                //     name: 'Ice cream sandwich ทำจมูก',
-                //     start: '2023-09-02',
-                //     end: '2023-09-02',
-                //     color: this.colors[this.rnd(0, this.colors.length - 1)],
-                // })
-                // events.push({
-                //     name: 'Eclair ทำปาก',
-                //     start: '2023-09-02',
-                //     end: '2023-09-02',
-                //     color: this.colors[this.rnd(0, this.colors.length - 1)],
-                // })
             }
             this.events = events
         },
