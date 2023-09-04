@@ -318,7 +318,7 @@ export default {
     // },
     async fn_getData(idcus) {
       await axios
-        .get(`${process.env.api_url}/treatment/group?IDCus=${idcus}&ID_treat`, {
+        .get(`${process.env.api_url}/treatment/group?IDCus=${idcus}`, {
           headers: {
             "Content-Type": "application/json",
           },
