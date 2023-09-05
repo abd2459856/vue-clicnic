@@ -68,7 +68,6 @@
                   <v-btn color="success" elevation="0" @click="fn_upadatecustomer" v-if="$route.query.type == 'edit'">
                     <v-icon> mdi-content-save </v-icon>บันทึก
                   </v-btn>
-                  {{ a }}
                 </v-card-actions>
               </v-tab-item>
               <v-tab-item>
@@ -221,14 +220,14 @@ export default {
         });
     },
     async fn_savecustomer() {
-      // if (!this.$refs.form.validate()) {
-      // this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
-      //   icon: "error",
-      //   color: "error",
-      //   btnCanceltext: "ตกลง",
-      // });
-      // return false;
-      // }
+      if (!this.myDetail.Fisrtname && !this.myDetail.Lastname && !this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       let data = JSON.stringify(this.myDetail);
       await axios
         .post(`${process.env.api_url}/customer/insert`, data, {
@@ -237,6 +236,11 @@ export default {
           },
         })
         .then(async (res) => {
+          this.$refs.confirm.dailogalert("เเก้ไขข้อมูลเรียบร้อย", ``, {
+            icon: "success",
+            color: "success",
+            btnCanceltext: "ตกลง",
+          });
           this.$router.push({
             path: "/customer/profile",
             query: { type: 'edit', idcus: res.data.ID_customer },
@@ -250,6 +254,14 @@ export default {
 
     },
     async fn_upadatecustomer() {
+      if (!this.myDetail.Fisrtname && !this.myDetail.Lastname && !this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       let data = JSON.stringify(this.myDetail);
       await axios
         .post(`${process.env.api_url}/customer/update`, data, {
@@ -258,6 +270,11 @@ export default {
           },
         })
         .then((res) => {
+          this.$refs.confirm.dailogalert("เเก้ไขข้อมูลเรียบร้อย", ``, {
+            icon: "success",
+            color: "success",
+            btnCanceltext: "ตกลง",
+          });
         })
         .catch((err) => {
           alert(err);
