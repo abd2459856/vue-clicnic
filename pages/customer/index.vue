@@ -28,7 +28,7 @@
                 prepend-inner-icon="mdi-magnify"
                 outlined
                 dense
-                placeholder="รหัสลูกค้า ชื่อ-นามสกุล เลขบัตรประชาชน"
+                placeholder="เบอร์โทรศัพท์ ชื่อ-นามสกุล เลขบัตรประชาชน"
                 hide-details
                 v-model="textSearch"
               ></v-text-field>
@@ -91,9 +91,15 @@
                 <td nowrap="" class="text-left">{{ r.ID_customer }}</td>
                 <td nowrap="" class="text-left">{{ r.Nickname }}</td>
                 <td nowrap="" class="text-left">
-                  <v-avatar size="30">
+                  <v-avatar size="30" v-if="r.img_name">
                     <img
-                      src="https://cdn.vuetifyjs.com/images/john.jpg"
+                      :src="`http://localhost/api-myClinic/${r.img_name}`"
+                      alt="John"
+                    />
+                  </v-avatar>
+                  <v-avatar size="30" v-else>
+                    <img
+                      :src="`https://avatars0.githubusercontent.com/u/9064066?v=4&s=460`"
                       alt="John"
                     />
                   </v-avatar>
@@ -119,9 +125,9 @@
                   >
                     <v-icon> mdi-pencil</v-icon>
                   </v-btn>
-                  <v-btn elevation="0" color="error" x-small text @click="fn_delateData(r.ID_customer)">
+                  <!-- <v-btn elevation="0" color="error" x-small text @click="fn_delateData(r.ID_customer)">
                     <v-icon> mdi-delete</v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </td>
               </tr>
             </tbody>

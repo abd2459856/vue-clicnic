@@ -59,7 +59,7 @@
             <v-tabs-items v-model="tab">
               <v-tab-item>
                 <v-card-text>
-                  <Detail_cus :myDetail="myDetail" :ReadOn="$route.query.type == 'detail'" ref="form"></Detail_cus>
+                  <Detail_cus :myDetail="myDetail" :ReadOn="$route.query.type == 'detail'" ref="der"></Detail_cus>
                 </v-card-text>
                 <v-card-actions class="justify-center" v-if="$route.query.type != 'detail'">
                   <v-btn color="success" elevation="0" @click="fn_savecustomer" v-if="$route.query.type == 'add'">
@@ -229,6 +229,8 @@ export default {
           color: "error",
           btnCanceltext: "ตกลง",
         });
+        
+        this.$refs.der.validate();
         return false;
       }
       let data = JSON.stringify(this.myDetail);
@@ -246,7 +248,7 @@ export default {
           });
           this.$router.push({
             path: "/customer/profile",
-            query: { type: 'edit', idcus: res.data.ID_customer },
+            query: { type: 'detail', idcus: res.data.ID_customer },
           });
           await this.fn_getCustomer(res.data.ID_customer)
           await this.fn_getprofile(res.data.ID_customer)
