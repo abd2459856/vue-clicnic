@@ -14,10 +14,11 @@
           <div align="center" style="margin-top: -100px !important">
 
             <v-avatar size="200" style="border: 3px solid #d4af37; z-index: 1" v-if="myDetail.img_name == null"
-              @click="dialog_insert = true">
+              @click="model_dialog(myProfile.ID_customer)">
               <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="John" />
             </v-avatar>
-            <v-avatar size="200" style="border: 3px solid #d4af37; z-index: 1" v-else @click="dialog_insert = true">
+            <v-avatar size="200" style="border: 3px solid #d4af37; z-index: 1" v-else
+              @click="model_dialog(myProfile.ID_customer)">
               <img :src="`http://localhost/api-myClinic/${myDetail.img_name}`" alt="John" />
             </v-avatar>
 
@@ -58,7 +59,7 @@
             <v-tabs-items v-model="tab">
               <v-tab-item>
                 <v-card-text>
-                  <Detail_cus :myDetail="myDetail" :ReadOn="$route.query.type == 'detail'"></Detail_cus>
+                  <Detail_cus :myDetail="myDetail" :ReadOn="$route.query.type == 'detail'" ref="form"></Detail_cus>
                 </v-card-text>
                 <v-card-actions class="justify-center" v-if="$route.query.type != 'detail'">
                   <v-btn color="success" elevation="0" @click="fn_savecustomer" v-if="$route.query.type == 'add'">
@@ -67,6 +68,7 @@
                   <v-btn color="success" elevation="0" @click="fn_upadatecustomer" v-if="$route.query.type == 'edit'">
                     <v-icon> mdi-content-save </v-icon>บันทึก
                   </v-btn>
+                  {{ a }}
                 </v-card-actions>
               </v-tab-item>
               <v-tab-item>
@@ -88,7 +90,7 @@
         <v-card-text>
           <v-row class="mt-2">
             <v-col md="12" sm="12" cols="12">
-              
+
               <v-file-input multiple v-model="Img" label="ภาพ" outlined dense></v-file-input>
             </v-col>
           </v-row>
@@ -103,8 +105,11 @@
           </v-btn>
           <v-btn color="blue darken-1" text @click="img_profile"> Save </v-btn>
         </v-card-actions>
+
       </v-card>
+
     </v-dialog>
+    <ConfirmDlg ref="confirm" />
   </div>
 </template>
 
@@ -112,16 +117,44 @@
 import axios from "axios";
 import Detail_cus from "@/components/Customer/Detail_cus";
 import Treatment from "@/components/Customer/Treatment";
+import ConfirmDlg from "@/components/ConfirmDlg.vue";
 export default {
   name: "IndexPage",
   components: {
     Detail_cus,
     Treatment,
+    ConfirmDlg,
   },
   data() {
     return {
       tab: 0,
-      myDetail: {},
+      myDetail: {
+        IDCard: '',
+        Nickname: '',
+        Prefix: '',
+        Fisrtname: '',
+        Lastname: '',
+        Birthday: '',
+        gender: '',
+        Occupation: '',
+        Race: '',
+        Nationality: '',
+        religion: '',
+        status_relationship: '',
+        weight: '',
+        height: '',
+        address_number: '',
+        address_moo: '',
+        address_village: '',
+        address_soi: '',
+        address_road: '',
+        address_subdistrict: '',
+        address_district: '',
+        address_province: '',
+        postal: '',
+        tell: '',
+        email: '',
+      },
       myProfile: {},
       a: '',
       dialog_insert: false,
@@ -129,8 +162,12 @@ export default {
     };
   },
   methods: {
+    model_dialog(ID_customer) {
+      if (ID_customer) {
+        this.dialog_insert = true;
+      }
+    },
     async img_profile() {
-
       let formData = new FormData();
       this.Img.forEach((element, index) => {
         formData.append("Img" + index, element);
@@ -148,7 +185,8 @@ export default {
           }
         )
         .then(async (res) => {
-          this.fn_getCustomer(this.$route.query.idcus)
+          this.dialog_insert = false;
+          this.fn_getCustomer(this.$route.query.idcus);
         })
         .catch((err) => {
           alert(err);
@@ -183,6 +221,14 @@ export default {
         });
     },
     async fn_savecustomer() {
+      // if (!this.$refs.form.validate()) {
+      // this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+      //   icon: "error",
+      //   color: "error",
+      //   btnCanceltext: "ตกลง",
+      // });
+      // return false;
+      // }
       let data = JSON.stringify(this.myDetail);
       await axios
         .post(`${process.env.api_url}/customer/insert`, data, {
@@ -191,6 +237,11 @@ export default {
           },
         })
         .then(async (res) => {
+          this.$router.push({
+            path: "/customer/profile",
+            query: { type: 'edit', idcus: res.data.ID_customer },
+          });
+          await this.fn_getCustomer(res.data.ID_customer)
           await this.fn_getprofile(res.data.ID_customer)
         })
         .catch((err) => {
