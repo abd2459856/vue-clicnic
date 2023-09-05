@@ -2,7 +2,7 @@
   <div>
     <v-card color="#212121" elevation="0" height="300px" class="pa-5">
       <div align="right" class="mb-5">
-        <v-btn depressed text color="#D4AF37"> เพิ่มนัด </v-btn>
+        <v-btn depressed text color="#D4AF37" @click="fn_addNut()"> เพิ่มนัด </v-btn>
         <!-- <v-btn depressed text color="#D4AF37">
           การรักษา
         </v-btn> -->
@@ -86,6 +86,7 @@
         </v-col>
       </v-row>
     </div>
+    <DailogNut ref="dailognut" @getdata="fn_getprofile($route.query.idcus)"></DailogNut>
   </div>
 </template>
 
@@ -93,11 +94,13 @@
 import axios from "axios";
 import Detail_cus from "@/components/Customer/Detail_cus";
 import Treatment from "@/components/Customer/Treatment";
+import DailogNut from "@/components/Sub/DailogNut";
 export default {
   name: "IndexPage",
   components: {
     Detail_cus,
     Treatment,
+    DailogNut,
   },
   data() {
     return {
@@ -179,6 +182,12 @@ export default {
         .catch((err) => {
           alert(err);
         });
+    },
+    fn_addNut() {
+      this.$refs.dailognut.open();
+      this.$refs.dailognut.FormAdd.ID_customer = this.myDetail.ID_customer
+      this.$refs.dailognut.FormAdd.name = `${this.myDetail.Fisrtname} ${this.myDetail.Lastname}`
+      this.$refs.dailognut.FormAdd.tel = this.myDetail.tell
     },
   },
   async mounted() {

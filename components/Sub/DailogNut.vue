@@ -181,7 +181,7 @@ export default {
   },
   methods: {
     async fn_dropdownCus() {
-      this.CoustomerOP=[];
+      this.CoustomerOP = [];
       await axios
         .get(`${process.env.api_url}/customer?textSearch=&IDCus=`, {
           headers: {
@@ -282,8 +282,24 @@ export default {
           },
         })
         .then((res) => {
-          this.dialog= false
-          this.$emit('getdata')
+          FormAdd = {
+            Date_nut: new Date(
+              Date.now() - new Date().getTimezoneOffset() * 60000
+            )
+              .toISOString()
+              .substr(0, 10),
+            ID_customer: "",
+            name: "",
+            tel: "",
+            start_time: "",
+            end_time: "",
+            ID_doctor: "",
+            ID_room: "",
+            ID_package: "",
+            Remark: "",
+          };
+          this.dialog = false;
+          this.$emit("getdata");
         })
         .catch((err) => {
           alert(err);

@@ -91,11 +91,21 @@
                 <td class="text-center" nowrap>{{ i + 1 }}</td>
                 <td nowrap class="text-left">{{ r.treat_name }}</td>
                 <td nowrap class="text-left">{{ r.treat_detail }}</td>
-                <td nowrap class="text-left">{{ r.treat_status }}</td>
-                <td nowrap class="text-left">
+                <td nowrap class="d-flex justify-center">
+                  <v-switch
+                    dense
+                    @change="updateStatus(!r.treat_status, r.ID_treat)"
+                    :label="r.treat_status ? `เปิดใช้งาน` : `ปิดใช้งาน`"
+                    v-model="r.treat_status"
+                    color="#D4AF37"
+                    value
+                    inset
+                  ></v-switch>
+                </td>
+                <td nowrap class="text-center">
                   <v-btn
                     elevation="0"
-                    color="error"
+                    color="warning"
                     small
                     text
                     @click="
@@ -131,6 +141,8 @@
                 outlined
                 dense
                 hide-details
+                :rules="[(v) => !!v || '']"
+                required
                 v-model="FormAdd.treat_name"
               ></v-text-field>
             </v-col>
@@ -152,24 +164,28 @@
           </v-btn>
           <v-btn
             v-if="FormAdd.ID_treat"
-            color="blue darken-1"
+            color="success"
             text
             @click="fn_upadatepackage"
           >
             Save
           </v-btn>
-          <v-btn v-else color="blue darken-1" text @click="fn_insertpackage">
+          <v-btn v-else color="success" text @click="fn_insertpackage">
             Save
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <ConfirmDlg ref="confirm" />
   </div>
 </template>
-  
 <script>
 import axios from "axios";
+import ConfirmDlg from "@/components/ConfirmDlg.vue";
 export default {
+  components: {
+    ConfirmDlg,
+  },
   name: "InspirePage",
   data: () => ({
     dialog: false,
@@ -203,6 +219,14 @@ export default {
         });
     },
     async fn_insertpackage() {
+      if (!this.FormAdd.treat_name) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       let data = JSON.stringify(this.FormAdd);
       await axios
         .post(`${process.env.api_url}/package/insert`, data, {
@@ -212,7 +236,7 @@ export default {
         })
         .then((res) => {
           this.FormAdd = {
-            treat_name: "",
+            ID_treat: "",
             treat_name: "",
             treat_detail: "",
             treat_status: "",
@@ -225,6 +249,14 @@ export default {
         });
     },
     async fn_upadatepackage() {
+      if (!this.FormAdd.treat_name) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       let data = JSON.stringify(this.FormAdd);
       await axios
         .post(`${process.env.api_url}/package/update`, data, {
@@ -234,13 +266,31 @@ export default {
         })
         .then((res) => {
           this.FormAdd = {
-            treat_name: "",
+            ID_treat: "",
             treat_name: "",
             treat_detail: "",
             treat_status: "",
           };
           this.dialog = false;
           this.fn_getData();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async updateStatus(status, id) {
+      this.FormAdd.ID_treat = id;
+      this.FormAdd.treat_status = status ? "no-active" : "active";
+      let data = JSON.stringify(this.FormAdd);
+      await axios
+        .post(`${process.env.api_url}/package/update`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.FormAdd.ID_treat="";
+          this.FormAdd.treat_status="";
         })
         .catch((err) => {
           alert(err);

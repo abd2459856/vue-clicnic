@@ -95,14 +95,24 @@
             <tbody>
               <tr v-for="(r, i) in desserts" :key="i">
                 <td class="text-center" nowrap>{{ i + 1 }}</td>
-                <td nowrap class="text-left">{{ r.Room_Number }}</td>
+                <td nowrap class="text-center">{{ r.Room_Number }}</td>
                 <td nowrap class="text-left">{{ r.Room_Name }}</td>
                 <td nowrap class="text-left">{{ r.Room_Detail }}</td>
-                <td nowrap class="text-left">{{ r.Room_Status }}</td>
-                <td nowrap class="text-left">
+                <td nowrap class="text-center">
+                  <v-switch
+                    dense
+                    @change="updateStatus(!r.Room_Status, r.ID_room)"
+                    :label="r.Room_Status ? `เปิดใช้งาน` : `ปิดใช้งาน`"
+                    v-model="r.Room_Status"
+                    color="#D4AF37"
+                    value
+                    inset
+                  ></v-switch>
+                </td>
+                <td nowrap class="text-center">
                   <v-btn
                     elevation="0"
-                    color="error"
+                    color="warning"
                     small
                     text
                     @click="
@@ -132,35 +142,39 @@
           >
         </v-card-title>
         <v-card-text>
-          <v-row>
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="เลขห้อง"
-                outlined
-                dense
-                hide-details
-                v-model="FormAdd.Room_Number"
-              ></v-text-field>
-            </v-col>
-            <v-col md="6" sm="12" cols="12">
-              <v-text-field
-                label="ห้องรักษา"
-                outlined
-                dense
-                hide-details
-                v-model="FormAdd.Room_Name"
-              ></v-text-field>
-            </v-col>
-            <v-col md="12" sm="12" cols="12">
-              <v-text-field
-                label="รายละเอียด"
-                outlined
-                dense
-                hide-details
-                v-model="FormAdd.Room_Detail"
-              ></v-text-field>
-            </v-col>
-          </v-row>
+          <v-form ref="forms" lazy-validation>
+            <v-row>
+              <v-col md="6" sm="12" cols="12">
+                <v-text-field
+                  label="เลขห้อง"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="[(v) => !!v || '']"
+                  v-model="FormAdd.Room_Number"
+                ></v-text-field>
+              </v-col>
+              <v-col md="6" sm="12" cols="12">
+                <v-text-field
+                  label="ห้องรักษา"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="[(v) => !!v || '']"
+                  v-model="FormAdd.Room_Name"
+                ></v-text-field>
+              </v-col>
+              <v-col md="12" sm="12" cols="12">
+                <v-text-field
+                  label="รายละเอียด"
+                  outlined
+                  dense
+                  hide-details
+                  v-model="FormAdd.Room_Detail"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -169,24 +183,29 @@
           </v-btn>
           <v-btn
             v-if="FormAdd.ID_room"
-            color="blue darken-1"
+            color="success"
             text
             @click="fn_upadateroom"
           >
             Save
           </v-btn>
-          <v-btn v-else color="blue darken-1" text @click="fn_insertroom">
+          <v-btn v-else color="success" text @click="fn_insertroom">
             Save
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <ConfirmDlg ref="confirm" />
   </div>
 </template>
   
 <script>
 import axios from "axios";
+import ConfirmDlg from "@/components/ConfirmDlg.vue";
 export default {
+  components: {
+    ConfirmDlg,
+  },
   name: "InspirePage",
   data: () => ({
     dialog: false,
@@ -221,6 +240,14 @@ export default {
         });
     },
     async fn_insertroom() {
+      if (!this.FormAdd.Room_Number || !this.FormAdd.Room_Name) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       let data = JSON.stringify(this.FormAdd);
       await axios
         .post(`${process.env.api_url}/room/insert`, data, {
@@ -244,6 +271,14 @@ export default {
         });
     },
     async fn_upadateroom() {
+      if (!this.FormAdd.Room_Number || !this.FormAdd.Room_Name) {
+        this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       let data = JSON.stringify(this.FormAdd);
       await axios
         .post(`${process.env.api_url}/room/update`, data, {
@@ -261,6 +296,24 @@ export default {
             Room_Status: "",
           };
           this.fn_getData();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async updateStatus(status, id) {
+      this.FormAdd.ID_room = id;
+      this.FormAdd.Room_Status = status ? "no-active" : "active";
+      let data = JSON.stringify(this.FormAdd);
+      await axios
+        .post(`${process.env.api_url}/room/update`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.FormAdd.ID_room = "";
+          this.FormAdd.Room_Status = "";
         })
         .catch((err) => {
           alert(err);
