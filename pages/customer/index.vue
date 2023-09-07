@@ -73,7 +73,11 @@
                     <img :src="`http://localhost/api-myClinic/${r.img_name}`" alt="John" />
                   </v-avatar>
                   <v-avatar size="30" v-else>
+<<<<<<< HEAD
                     <img :src="`https://avatars0.githubusercontent.com/u/9064066?v=4&s=460`" alt="John" />
+=======
+                    <v-icon > mdi-account-circle </v-icon>
+>>>>>>> dc8b9fe649ea2ba6bb7b8e0a4b69f6ba8cab6bff
                   </v-avatar>
                   <span class="pl-3">{{ r.Fisrtname }}&nbsp;{{ r.Lastname }}</span>
                 </td>
@@ -88,9 +92,20 @@
                     :to="`/customer/profile?type=detail&idcus=${r.ID_customer}`">
                     <v-icon> mdi-eye</v-icon>
                   </v-btn>
+<<<<<<< HEAD
                   <v-btn elevation="0" color="warning" x-small text
                     :to="`/customer/profile?type=edit&idcus=${r.ID_customer}`">
                     <v-icon> mdi-pencil</v-icon>
+=======
+                  <v-btn
+                    elevation="0"
+                    color="warning"
+                    x-small
+                    text
+                    :to="`/customer/profile?type=edit&idcus=${r.ID_customer}`"
+                  >
+                    <v-icon>mdi-text-box-edit</v-icon>
+>>>>>>> dc8b9fe649ea2ba6bb7b8e0a4b69f6ba8cab6bff
                   </v-btn>
                   <!-- <v-btn elevation="0" color="error" x-small text @click="fn_delateData(r.ID_customer)">
                     <v-icon> mdi-delete</v-icon>

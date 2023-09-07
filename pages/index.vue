@@ -1,5 +1,5 @@
 <style scoped>
-::v-deep .costomgray>.v-input__control>.v-input__slot {
+::v-deep .costomgray > .v-input__control > .v-input__slot {
   background-color: white;
 }
 </style>
@@ -23,29 +23,74 @@
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
             <v-col md="7">
-              <v-text-field class="costomgray" prepend-inner-icon="mdi-magnify" outlined dense
-                placeholder="รหัสลูกค้า ชื่อ-นามสกุล หรือ แพทย์" hide-details
-                v-model="formSearch.textSearch"></v-text-field>
+              <v-text-field
+                class="costomgray"
+                prepend-inner-icon="mdi-magnify"
+                outlined
+                dense
+                placeholder="รหัสลูกค้า ชื่อ-นามสกุล เบอร์โทรศัพท์  หรือ แพทย์"
+                hide-details
+                v-model="formSearch.textSearch"
+              ></v-text-field>
             </v-col>
             <v-col md="2">
-              <v-menu v-model="menuStart" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
-                offset-y min-width="auto">
+              <v-menu
+                v-model="menuStart"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
                 <template v-slot:activator="{ on, attrs }">
-                  <v-text-field v-model="formSearch.dateStart" label="ตั้งแต่วันที่" prepend-inner-icon="mdi-calendar"
-                    readonly v-bind="attrs" v-on="on" outlined dense hide-details class="costomgray"></v-text-field>
+                  <v-text-field
+                    v-model="formSearch.dateStart"
+                    label="ตั้งแต่วันที่"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                    dense
+                    hide-details
+                    class="costomgray"
+                  ></v-text-field>
                 </template>
-                <v-date-picker v-model="formSearch.dateStart" color="deep-orange"
-                  @input="menuStart = false"></v-date-picker>
+                <v-date-picker
+                  v-model="formSearch.dateStart"
+                  color="deep-orange"
+                  @input="menuStart = false"
+                ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col md="2">
-              <v-menu v-model="menuEnd" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
-                offset-y min-width="auto">
+              <v-menu
+                v-model="menuEnd"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
                 <template v-slot:activator="{ on, attrs }">
-                  <v-text-field v-model="formSearch.dateEnd" label="ตั้งแต่วันที่" prepend-inner-icon="mdi-calendar"
-                    readonly v-bind="attrs" v-on="on" outlined dense hide-details class="costomgray"></v-text-field>
+                  <v-text-field
+                    v-model="formSearch.dateEnd"
+                    label="ตั้งแต่วันที่"
+                    prepend-inner-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    outlined
+                    dense
+                    hide-details
+                    class="costomgray"
+                  ></v-text-field>
                 </template>
-                <v-date-picker v-model="formSearch.dateEnd" color="deep-orange" @input="menuEnd = false"></v-date-picker>
+                <v-date-picker
+                  v-model="formSearch.dateEnd"
+                  color="deep-orange"
+                  @input="menuEnd = false"
+                ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col md="1">
@@ -61,90 +106,187 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   ลำดับ
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   รหัสลูกค้า
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   ชื่อ-นามสกุล
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
+                  เบอร์โทรศัพท์
+                </th>
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   แพทย์
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   สถานะ
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   เวลานัด
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   เลื่อน/ยกเลิก
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   มาถึง
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   เข้าตรวจ
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   ตรวจเสร็จ
                 </th>
 
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   หมายเหตุ
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, i) in desserts" :key="i" :style="`background-color:${item.Date_finish ? '#E8F5E9' : item.Date_come ? '#FFF3E0' : ''
-                };`">
+              <tr
+                v-for="(item, i) in desserts"
+                :key="i"
+                :style="`background-color:${
+                  item.Date_finish ? '#E8F5E9' : item.Date_come ? '#FFF3E0' : ''
+                };`"
+              >
                 <td class="text-center">{{ i + 1 }}</td>
                 <td class="text-left">{{ item.ID_customer }}</td>
                 <td class="text-left">
-                  <v-btn icon :to="`/customer/profile?type=detail&idcus=${item.ID_customer}`">
-                    <v-avatar size="30">
-                      <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+                  <v-btn
+                    icon
+                    :to="`/customer/profile?type=detail&idcus=${item.ID_customer}`"
+                  >
+                    <v-avatar size="30" v-if="item.img_name">
+                      <img
+                        :src="`http://localhost/api-myClinic/${item.img_name}`"
+                        alt="John"
+                      />
+                    </v-avatar>
+                    <v-avatar size="30" v-else>
+                      <v-icon> mdi-account-circle </v-icon>
                     </v-avatar>
                   </v-btn>
                   <span class="pl-3">{{ item.C_Name }}</span>
                 </td>
+                <td class="text-left">{{ item.tell }}</td>
                 <td class="text-left">{{ item.D_Name }}</td>
-                <td class="text-left">{{ item.Status_nut }}</td>
-                <td class="text-left">
+                <td class="text-center">
+                  <v-chip
+                  dark
+                    :color="
+                      item.Status_nut == 'มาถึง' || item.Status_nut == 'เข้าตรวจ'
+                        ? 'warning'
+                        : item.Status_nut == 'ตรวจเสร็จ'
+                        ? 'success'
+                        :item.Status_nut ==  'เลื่อนนัด'
+                        ?'purple'
+                        :item.Status_nut ==  'ยกเลิก'
+                        ?'error'
+                        :'cyan'
+                    "
+                    small
+                    >{{ item.Status_nut }}</v-chip
+                  >
+                </td>
+                <td class="text-center">
                   {{ DateFormat(item.Date_nut, "DD-MM-YYYY") }}
                   <span style="color: grey">
-                    {{ DateFormat(item.Date_nut, "HH:mm A") }}</span>
+                    {{ DateFormat(item.Date_nut, "HH:mm A") }}</span
+                  >
                 </td>
-                <td class="text-left">
-                  <v-btn elevation="0" color="error" small text @click="
-                    FormEdit.ID_nut = item.ID_nut;
-                  dialogEdit = true;
-                  ">
+                <td class="text-center">
+                  <v-btn
+                  :disabled="!(item.Status_nut=='นัดหมาย'||item.Status_nut=='เลื่อนนัด')"
+                    elevation="0"
+                    color="error"
+                    small
+                    text
+                    @click="
+                      FormEdit.ID_nut = item.ID_nut;
+                      dialogEdit = true;
+                    "
+                  >
                     <v-icon>mdi-text-box-edit</v-icon>
                   </v-btn>
                 </td>
-                <td class="text-left">
+                <td class="text-center">
                   <span v-if="item.Date_come">{{
                     DateFormat(item.Date_come, "HH:mm A")
                   }}</span>
-                  <v-btn v-else elevation="0" color="info" small @click="fn_CustomerCome(item)">
+                  <v-btn
+                    v-else
+                    elevation="0"
+                    color="info"
+                    small
+                    @click="fn_CustomerCome(item)"
+                  >
                     มาถึง
                   </v-btn>
                 </td>
-                <td class="text-left">
-                  <v-btn v-if="item.Date_come && !item.Date_inspect" elevation="0" color="warning" small
-                    @click="fn_CustomerInspect(item)">
+                <td class="text-center">
+                  <v-btn
+                    v-if="item.Date_come && !item.Date_inspect"
+                    elevation="0"
+                    color="warning"
+                    small
+                    @click="fn_CustomerInspect(item)"
+                  >
                     เข้าตรวจ
                   </v-btn>
                   <span v-else>{{
                     DateFormat(item.Date_inspect, "HH:mm A")
                   }}</span>
                 </td>
-                <td class="text-left">
-                  <v-btn v-if="item.Date_come && item.Date_inspect && !item.Date_finish
-                      " elevation="0" color="success" small @click="fn_CustomerFinish(item)">
+                <td class="text-center">
+                  <v-btn
+                    v-if="
+                      item.Date_come && item.Date_inspect && !item.Date_finish
+                    "
+                    elevation="0"
+                    color="success"
+                    small
+                    @click="fn_CustomerFinish(item)"
+                  >
                     ตรวจเสร็จ
                   </v-btn>
                   <span v-else>{{
@@ -163,56 +305,155 @@
     <v-dialog v-model="dialogEdit" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="text-h5"><v-icon>mdi-calendar-plus-outline</v-icon> เลื่อน/ยกเลิก</span>
+          <span class="text-h5"
+            ><v-icon>mdi-calendar-plus-outline</v-icon> เลื่อน/ยกเลิก</span
+          >
         </v-card-title>
         <v-card-text>
           <v-form ref="forms" lazy-validation>
             <v-row>
-
               <v-col md="6" sm="12" cols="12">
-
-                <v-select outlined dense hide-details label="เลือก" :items="['เลื่อนนัด', 'ยกเลิก']"
-                  v-model="FormEdit.Status_nut" :rules="[(v) => !!v || '']" required></v-select>
+                <v-select
+                  outlined
+                  dense
+                  hide-details
+                  label="เลือก"
+                  :items="['เลื่อนนัด', 'ยกเลิก']"
+                  v-model="FormEdit.Status_nut"
+                  :rules="[(v) => !!v || '']"
+                  required
+                ></v-select>
               </v-col>
             </v-row>
             <v-row>
               <v-col md="6" sm="12" cols="12">
-                <v-menu v-model="menuEdit" :close-on-content-click="false" :nudge-right="40" transition="scale-transition"
-                  offset-y min-width="auto">
+                <v-menu
+                  v-model="menuEdit"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field v-model="FormEdit.Date_nut" label="วันที่" prepend-inner-icon="mdi-calendar" readonly
-                      v-bind="attrs" v-on="on" outlined dense hide-details class="costomgray"></v-text-field>
+                    <v-text-field
+                      v-model="FormEdit.Date_nut"
+                      label="วันที่"
+                      prepend-inner-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      outlined
+                      dense
+                      hide-details
+                      :disabled="FormEdit.Status_nut == 'ยกเลิก'"
+                      :rules="[(v) => !!v || '']"
+                      class="costomgray"
+                    ></v-text-field>
                   </template>
-                  <v-date-picker v-model="FormEdit.Date_nut" color="deep-orange"
-                    @input="menuEdit = false"></v-date-picker>
+                  <v-date-picker
+                    v-model="FormEdit.Date_nut"
+                    :min="currentDate"
+                    color="deep-orange"
+                    @input="menuEdit = false"
+                  ></v-date-picker>
                 </v-menu>
+              </v-col>
+              <v-col md="6" sm="12" cols="12">
+                <v-text-field
+                  label="เวลานัด"
+                  outlined
+                  dense
+                  :disabled="FormEdit.Status_nut == 'ยกเลิก'"
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.start_time"
+                  :rules="[(v) => !!v || '']"
+
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
             <v-row class="pb-3">
-              <v-col md="6" sm="12" cols="12">
-                <v-text-field v-if="FormEdit.Status_nut == 'ยกเลิก'" label="เริ่มเวลา" outlined dense hide-details
-                  type="time" v-model="FormEdit.start_time"></v-text-field>
-                <v-text-field v-else label="เริ่มเวลา" outlined dense hide-details type="time"
-                  v-model="FormEdit.start_time" :rules="[(v) => !!v || '']" required></v-text-field>
+              <!-- <v-col md="6" sm="12" cols="12">
+                <v-text-field
+                  v-if="FormEdit.Status_nut == 'ยกเลิก'"
+                  label="เริ่มเวลา"
+                  outlined
+                  dense
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.start_time"
+                ></v-text-field>
+                <v-text-field
+                  v-else
+                  label="เวลานัด"
+                  outlined
+                  dense
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.start_time"
+                  :rules="[(v) => !!v || '']"
+                  required
+                ></v-text-field>
               </v-col>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field v-if="FormEdit.Status_nut == 'ยกเลิก'" label="สิ้นสุด" outlined dense hide-details
-                  type="time" v-model="FormEdit.end_time"></v-text-field>
-                <v-text-field v-else label="สิ้นสุด" outlined dense hide-details type="time" v-model="FormEdit.end_time"
-                  :rules="[(v) => !!v || '']" required></v-text-field>
-              </v-col>
+                <v-text-field
+                  v-if="FormEdit.Status_nut == 'ยกเลิก'"
+                  label="สิ้นสุด"
+                  outlined
+                  dense
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.end_time"
+                ></v-text-field>
+                <v-text-field
+                  v-else
+                  label="สิ้นสุด"
+                  outlined
+                  dense
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.end_time"
+                  :rules="[(v) => !!v || '']"
+                  required
+                ></v-text-field>
+              </v-col> -->
               <v-col md="12" sm="12" cols="12">
-                <v-textarea v-if="FormEdit.Status_nut == 'ยกเลิก'" outlined dense hide-details label="หมายเหตุ" rows="3"
-                  v-model="FormEdit.Remark" :rules="[(v) => !!v || '']" required></v-textarea>
-                <v-textarea v-else outlined dense hide-details label="หมายเหตุ" rows="3"
-                  v-model="FormEdit.Remark"></v-textarea>
+                <v-textarea
+                  v-if="FormEdit.Status_nut == 'ยกเลิก'"
+                  outlined
+                  dense
+                  hide-details
+                  label="หมายเหตุ"
+                  rows="3"
+                  v-model="FormEdit.Remark"
+                  :rules="[(v) => !!v || '']"
+                  required
+                ></v-textarea>
+                <v-textarea
+                  v-else
+                  outlined
+                  dense
+                  hide-details
+                  label="หมายเหตุ"
+                  rows="3"
+                  v-model="FormEdit.Remark"
+                ></v-textarea>
               </v-col>
             </v-row>
           </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="$refs.forms.reset(); dialogEdit = false;">
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              $refs.forms.reset();
+              dialogEdit = false;
+            "
+          >
             Close
           </v-btn>
           <v-btn color="blue darken-1" text @click="fn_updateNut"> Save </v-btn>
@@ -242,7 +483,9 @@ export default {
       menuEdit: false,
       dialog: false,
       dialogEdit: false,
-
+      currentDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10),
       desserts: [],
       FormEdit: {
         Date_nut: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -370,6 +613,18 @@ export default {
         });
         return false;
       }
+      let curDate = new Date(Date.now());
+      let Date_nut = new Date(
+        `${this.FormEdit.Date_nut} ${this.FormEdit.start_time}`
+      );
+      if (Date_nut < curDate) {
+        this.$refs.confirm.dailogalert("ไม่สามารถนัดย้อนหลัง", ``, {
+          icon: "error",
+          color: "error",
+          btnCanceltext: "ตกลง",
+        });
+        return false;
+      }
       let data = JSON.stringify(this.FormEdit);
       await axios
         .post(`${process.env.api_url}/appointment/update`, data, {
@@ -378,11 +633,15 @@ export default {
           },
         })
         .then((res) => {
-          this.$refs.confirm.dailogalert(this.FormEdit.Status_nut + " สำเร็จ", ``, {
-            icon: "success",
-            color: "success",
-            btnCanceltext: "ตกลง",
-          });
+          this.$refs.confirm.dailogalert(
+            this.FormEdit.Status_nut + " สำเร็จ",
+            ``,
+            {
+              icon: "success",
+              color: "success",
+              btnCanceltext: "ตกลง",
+            }
+          );
           this.dialogEdit = false;
           this.fn_getData();
         })
@@ -398,7 +657,7 @@ export default {
         this.formSearch.dateStart = this.$route.query.Date;
       }
       this.fn_getData();
-    } catch { }
+    } catch {}
   },
 };
 </script>

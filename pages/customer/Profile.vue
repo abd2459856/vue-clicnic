@@ -15,7 +15,7 @@
 
             <v-avatar size="200" style="border: 3px solid #d4af37; z-index: 1" v-if="myDetail.img_name == null"
               @click="model_dialog(myProfile.ID_customer)">
-              <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="John" />
+              <img src="~/static/avatar.png" alt="" height="45px" />
             </v-avatar>
             <v-avatar size="200" style="border: 3px solid #d4af37; z-index: 1" v-else
               @click="model_dialog(myProfile.ID_customer)">
@@ -303,7 +303,7 @@ export default {
         });
     },
     fn_addNut() {
-      this.$refs.dailognut.open();
+      this.$refs.dailognut.open('fix');
       this.$refs.dailognut.FormAdd.ID_customer = this.myDetail.ID_customer
       this.$refs.dailognut.FormAdd.name = `${this.myDetail.Fisrtname} ${this.myDetail.Lastname}`
       this.$refs.dailognut.FormAdd.tel = this.myDetail.tell

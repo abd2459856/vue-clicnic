@@ -19,6 +19,10 @@
             @click="
               dialogTitle = 'เพิ่มหัวข้อการรักษา';
               dialog = true;
+              FormAdd.ID_treat = '';
+              FormAdd.treat_name = '';
+              FormAdd.treat_detail = '';
+              FormAdd.treat_status = '';
             "
           >
             <v-icon>mdi-medication</v-icon> เพิ่ม
@@ -206,7 +210,7 @@ export default {
   methods: {
     async fn_getData() {
       await axios
-        .get(`${process.env.api_url}/package?textSearch=${this.textSearch}`, {
+        .get(`${process.env.api_url}/package?textSearch=${this.textSearch}&status=`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -235,12 +239,6 @@ export default {
           },
         })
         .then((res) => {
-          this.FormAdd = {
-            ID_treat: "",
-            treat_name: "",
-            treat_detail: "",
-            treat_status: "",
-          };
           this.dialog = false;
           this.fn_getData();
         })
@@ -265,12 +263,6 @@ export default {
           },
         })
         .then((res) => {
-          this.FormAdd = {
-            ID_treat: "",
-            treat_name: "",
-            treat_detail: "",
-            treat_status: "",
-          };
           this.dialog = false;
           this.fn_getData();
         })
@@ -289,8 +281,8 @@ export default {
           },
         })
         .then((res) => {
-          this.FormAdd.ID_treat="";
-          this.FormAdd.treat_status="";
+          this.FormAdd.ID_treat = "";
+          this.FormAdd.treat_status = "";
         })
         .catch((err) => {
           alert(err);
