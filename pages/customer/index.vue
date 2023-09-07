@@ -1,5 +1,5 @@
 <style scoped>
-::v-deep .costomgray > .v-input__control > .v-input__slot {
+::v-deep .costomgray>.v-input__control>.v-input__slot {
   background-color: white;
 }
 </style>
@@ -23,15 +23,8 @@
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
             <v-col md="11">
-              <v-text-field
-                class="costomgray"
-                prepend-inner-icon="mdi-magnify"
-                outlined
-                dense
-                placeholder="เบอร์โทรศัพท์ ชื่อ-นามสกุล เลขบัตรประชาชน"
-                hide-details
-                v-model="textSearch"
-              ></v-text-field>
+              <v-text-field class="costomgray" prepend-inner-icon="mdi-magnify" outlined dense
+                placeholder="เบอร์โทรศัพท์ ชื่อ-นามสกุล เลขบัตรประชาชน" hide-details v-model="textSearch"></v-text-field>
             </v-col>
             <v-col md="1">
               <v-btn elevation="0" color="primary" @click="fn_getData">
@@ -47,82 +40,56 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   ลำดับ
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   รหัสลูกค้า
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   ชื่อเล่น
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   ชื่อ - สกุล
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   เบอร์โทรศัพท์
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
+                  สถานะ
+                </th>
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(r, i) in desserts" :key="i">
-                <td class="text-center" nowrap="">{{ r.row }}</td>
+                <td class="text-center" nowrap="">{{ i+1 }}</td>
                 <td nowrap="" class="text-left">{{ r.ID_customer }}</td>
                 <td nowrap="" class="text-left">{{ r.Nickname }}</td>
                 <td nowrap="" class="text-left">
                   <v-avatar size="30" v-if="r.img_name">
-                    <img
-                      :src="`http://localhost/api-myClinic/${r.img_name}`"
-                      alt="John"
-                    />
+                    <img :src="`http://localhost/api-myClinic/${r.img_name}`" alt="John" />
                   </v-avatar>
                   <v-avatar size="30" v-else>
-                    <img
-                      :src="`https://avatars0.githubusercontent.com/u/9064066?v=4&s=460`"
-                      alt="John"
-                    />
+                    <img :src="`https://avatars0.githubusercontent.com/u/9064066?v=4&s=460`" alt="John" />
                   </v-avatar>
                   <span class="pl-3">{{ r.Fisrtname }}&nbsp;{{ r.Lastname }}</span>
                 </td>
                 <td nowrap="" class="text-left">{{ r.tell }}</td>
+                <td nowrap class="d-flex justify-center">
+                  <v-switch dense @change="updateStatus(!r.status, r.ID_customer)"
+                    :label="r.status == 1 ? `เปิดใช้งาน` : `ปิดใช้งาน`" v-model="r.status" color="#D4AF37" value
+                    inset></v-switch>
+                </td>
                 <td nowrap="" class="text-center">
-                  <v-btn
-                    elevation="0"
-                    color="info"
-                    x-small
-                    text
-                    :to="`/customer/profile?type=detail&idcus=${r.ID_customer}`"
-                  >
+                  <v-btn elevation="0" color="info" x-small text
+                    :to="`/customer/profile?type=detail&idcus=${r.ID_customer}`">
                     <v-icon> mdi-eye</v-icon>
                   </v-btn>
-                  <v-btn
-                    elevation="0"
-                    color="warning"
-                    x-small
-                    text
-                    :to="`/customer/profile?type=edit&idcus=${r.ID_customer}`"
-                  >
+                  <v-btn elevation="0" color="warning" x-small text
+                    :to="`/customer/profile?type=edit&idcus=${r.ID_customer}`">
                     <v-icon> mdi-pencil</v-icon>
                   </v-btn>
                   <!-- <v-btn elevation="0" color="error" x-small text @click="fn_delateData(r.ID_customer)">
@@ -148,7 +115,7 @@ export default {
     page: 1,
     total_record: 1,
     desserts: [],
-    textSearch:'',
+    textSearch: '',
   }),
   methods: {
     async fn_getData() {
@@ -159,7 +126,27 @@ export default {
           },
         })
         .then((res) => {
-          this.desserts = res.data.data;
+          this.desserts = res.data.newrespone;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async updateStatus(status, id) {
+      status = status == 1 ? 0 : 1;
+      let data = new FormData();
+      data.append("ID_customer", id);
+      data.append("status", status);
+      // this.FormAdd.ID_treat = id;
+     
+      await axios
+        .post(`${process.env.api_url}/customer/update_status`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+
         })
         .catch((err) => {
           alert(err);
@@ -183,7 +170,7 @@ export default {
         });
     },
   },
-  mounted(){
+  mounted() {
     this.fn_getData()
   }
 };

@@ -321,7 +321,7 @@ export default {
             })
             .then((res) => {
               this.get_img = res.data.data;
-              console.log(res.data)
+             
             })
         })
         .catch((err) => {
@@ -332,13 +332,14 @@ export default {
     },
     async fn_detaailTreat2(item) {
       await axios
-        .get(`${process.env.api_url}/Treatment_con/get_img?id_customer=${this.$route.query.idcus}&id_type=${item.ID_package}&id_rendezvous=${item.ID_treatments}`, {
+        .get(`${process.env.api_url}/Treatment_con/get_img?id_customer=${this.$route.query.idcus}&id_type=${item.ID_treat}&id_rendezvous=${item.ID_treatments}`, {
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then((res) => {
           this.get_img = res.data.data;
+          console.log(res.data.data)
         })
         .catch((err) => {
           alert(err);
