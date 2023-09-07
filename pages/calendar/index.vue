@@ -71,15 +71,23 @@ export default {
                 .catch((err) => {
                     alert(err)
                 });
-                console.log(data.result)
+            console.log(data.result)
             for (let i = 0; i < data.result.length; i++) {
                 events.push({
-                    name: data.result[i].Fisrtname+''+data.result[i].Lastname,
+                    name: data.result[i].Fisrtname + '' + data.result[i].Lastname,
                     start: data.result[i].Date_nut,
                     end: data.result[i].Date_nut,
-                    color: this.colors[this.rnd(0, this.colors.length - 1)],
+                    color: data.result[i].Status_nut == 'มาถึง' || data.result[i].Status_nut == 'เข้าตรวจ' ? 'warning'
+                        : data.result[i].Status_nut == 'ตรวจเสร็จ'
+                            ? 'success'
+                            : data.result[i].Status_nut == 'เลื่อนนัด'
+                                ? 'purple'
+                                : data.result[i].Status_nut == 'ยกเลิก'
+                                    ? 'error'
+                                    : 'cyan'
                 })
             }
+
             this.events = events
         },
         getEventColor(event) {
