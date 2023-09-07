@@ -132,7 +132,6 @@
           </v-row>
         </v-card-text>
         <v-card-actions>
-          {{ this.formInsert }}
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false">
             Close

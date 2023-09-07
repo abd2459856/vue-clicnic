@@ -229,7 +229,7 @@ export default {
           color: "error",
           btnCanceltext: "ตกลง",
         });
-        
+
         this.$refs.der.validate();
         return false;
       }
@@ -247,11 +247,15 @@ export default {
             btnCanceltext: "ตกลง",
           });
           this.$router.push({
-            path: "/customer/profile",
-            query: { type: 'detail', idcus: res.data.ID_customer },
+            path: "/customer"
           });
-          await this.fn_getCustomer(res.data.ID_customer)
-          await this.fn_getprofile(res.data.ID_customer)
+          // window.location.reload();
+          // this.$router.push({
+          //   path: "/customer/profile",
+          //   query: { type: 'detail', idcus: res.data.ID_customer },
+          // });
+          // await this.fn_getCustomer(res.data.ID_customer)
+          // await this.fn_getprofile(res.data.ID_customer)
         })
         .catch((err) => {
           alert(err);
