@@ -1,5 +1,5 @@
 <style scoped>
-::v-deep .costomgray>.v-input__control>.v-input__slot {
+::v-deep .costomgray > .v-input__control > .v-input__slot {
   background-color: white;
 }
 </style>
@@ -13,7 +13,20 @@
         </v-chip>
         <v-spacer />
         <div class="text-center">
-          <v-btn text color="success" @click="dialog = true; type = 1">
+          <v-btn
+            text
+            color="success"
+            @click="
+              dialog = true;
+              type = 1;
+              formInsert.ID_Doctor = '';
+              formInsert.Fisrtname = '';
+              formInsert.Lastname = '';
+              formInsert.License = '';
+              formInsert.ID = '';
+              formInsert.Status = '';
+            "
+          >
             <v-icon>mdi-calendar-plus-outline</v-icon> เพิ่มแพทย์
           </v-btn>
         </div>
@@ -23,8 +36,15 @@
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
             <v-col md="11">
-              <v-text-field class="costomgray" prepend-inner-icon="mdi-magnify" outlined dense
-                placeholder="รหัสแพทย์ หรือ ชื่อ-นามสกุล" hide-details v-model="textSearch"></v-text-field>
+              <v-text-field
+                class="costomgray"
+                prepend-inner-icon="mdi-magnify"
+                outlined
+                dense
+                placeholder="รหัสแพทย์ หรือ ชื่อ-นามสกุล"
+                hide-details
+                v-model="textSearch"
+              ></v-text-field>
             </v-col>
             <v-col md="1">
               <v-btn elevation="0" color="primary" @click="fn_getData">
@@ -39,22 +59,40 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-center font-weight-bold white--text"
+                >
                   ลำดับ
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-left font-weight-bold white--text"
+                >
                   รหัสแพทย์
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-left font-weight-bold white--text"
+                >
                   ชื่อ-นามสกุล
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-left font-weight-bold white--text"
+                >
                   ใบประกอบ
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-left font-weight-bold white--text"
+                >
                   สถานะ
                 </th>
-                <th style="background-color: #212121" class="text-left font-weight-bold white--text">
+                <th
+                  style="background-color: #212121"
+                  class="text-left font-weight-bold white--text"
+                >
                   Action
                 </th>
               </tr>
@@ -65,22 +103,43 @@
                 <td class="text-left">{{ item.ID_Doctor }}</td>
                 <td class="text-left">
                   <v-avatar size="30">
-                    <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+                    <v-icon > mdi-account-circle </v-icon>
                   </v-avatar>
-                  <span class="pl-3">{{ item.Fisrtname }}&nbsp;{{ item.Lastname }}</span>
+                  <span class="pl-3"
+                    >{{ item.Fisrtname }}&nbsp;{{ item.Lastname }}</span
+                  >
                 </td>
                 <td class="text-left">
-                  <v-btn v-if="item.License" elevation="0" color="primary" text small>
+                  <v-btn
+                    v-if="item.License"
+                    elevation="0"
+                    color="primary"
+                    text
+                    small
+                  >
                     <v-icon>mdi-image</v-icon>
                   </v-btn>
                 </td>
-                <td class="text-left">{{ item.Status }}</td>
                 <td class="text-left">
-                  <v-btn elevation="0" color="warning" x-small text @click="Edtil_doctor(item.ID)">
-                    <v-icon> mdi-pencil</v-icon>
-                  </v-btn>
-                  <v-btn elevation="0" @click="fn_delateData(item.ID)" color="error" x-small text>
-                    <v-icon> mdi-delete</v-icon>
+                  <v-switch
+                    dense
+                    @change="updateStatus(!item.Status, item.ID)"
+                    :label="item.Status ? `เปิดใช้งาน` : `ปิดใช้งาน`"
+                    v-model="item.Status"
+                    color="#D4AF37"
+                    value
+                    inset
+                  ></v-switch>
+                </td>
+                <td class="text-left">
+                  <v-btn
+                    elevation="0"
+                    color="warning"
+                    x-small
+                    text
+                    @click="Edtil_doctor(item.ID)"
+                  >
+                    <v-icon> mdi-text-box-edit</v-icon>
                   </v-btn>
                 </td>
               </tr>
@@ -92,31 +151,62 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="text-h5" v-if="type == 1"><v-icon>mdi-calendar-plus-outline</v-icon> เพิ่มแพทย์</span>
-          <span class="text-h5" v-else><v-icon>mdi-calendar-plus-outline</v-icon> แก้ไขแพทย์</span>
+          <span class="text-h5" v-if="type == 1"
+            ><v-icon>mdi-calendar-plus-outline</v-icon> เพิ่มแพทย์</span
+          >
+          <span class="text-h5" v-else
+            ><v-icon>mdi-calendar-plus-outline</v-icon> แก้ไขแพทย์</span
+          >
         </v-card-title>
         <v-card-text>
           <v-form ref="form" lazy-validation>
             <v-row>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field label="รหัส" outlined dense hide-details v-model="formInsert.ID_Doctor"
-                  :rules="[(v) => !!v || '']" required></v-text-field>
+                <v-text-field
+                  label="รหัส"
+                  outlined
+                  dense
+                  hide-details
+                  v-model="formInsert.ID_Doctor"
+                  :rules="[(v) => !!v || '']"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field label="ชื่อ" outlined dense hide-details :rules="[(v) => !!v || '']" required
-                  v-model="formInsert.Fisrtname"></v-text-field>
+                <v-text-field
+                  label="ชื่อ"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="[(v) => !!v || '']"
+                  required
+                  v-model="formInsert.Fisrtname"
+                ></v-text-field>
               </v-col>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field label="นามสกุล" outlined dense hide-details :rules="[(v) => !!v || '']" required
-                  v-model="formInsert.Lastname"></v-text-field>
+                <v-text-field
+                  label="นามสกุล"
+                  outlined
+                  dense
+                  hide-details
+                  :rules="[(v) => !!v || '']"
+                  required
+                  v-model="formInsert.Lastname"
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-form>
           <v-row class="mt-2" v-if="type == 1">
             <v-col md="12" sm="12" cols="12">
-              <v-file-input multiple v-model="formInsert.License" label="ใบประกอบ" outlined dense></v-file-input>
+              <v-file-input
+                multiple
+                v-model="formInsert.License"
+                label="ใบประกอบ"
+                outlined
+                dense
+              ></v-file-input>
             </v-col>
           </v-row>
         </v-card-text>
@@ -125,10 +215,20 @@
           <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="fn_insertData" v-if="type == 1">
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="fn_insertData"
+            v-if="type == 1"
+          >
             Save
           </v-btn>
-          <v-btn color="blue darken-1" text @click="fn_EdtilData()" v-if="type == 2">
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="fn_EdtilData()"
+            v-if="type == 2"
+          >
             Save Edtil
           </v-btn>
         </v-card-actions>
@@ -145,7 +245,7 @@ export default {
   name: "IndexPage",
   components: {
     Vmenu,
-    ConfirmDlg
+    ConfirmDlg,
   },
   data() {
     return {
@@ -157,7 +257,8 @@ export default {
         Fisrtname: "",
         Lastname: "",
         License: [],
-        ID: 0,
+        ID: "",
+        Status: "",
       },
       type: 1,
     };
@@ -165,7 +266,7 @@ export default {
   methods: {
     async Edtil_doctor(ID) {
       await axios
-        .get(`${process.env.api_url}/doctor?ID=${ID}&textSearch=`, {
+        .get(`${process.env.api_url}/doctor?ID=${ID}&textSearch=&status=`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -181,11 +282,14 @@ export default {
     },
     async fn_getData() {
       await axios
-        .get(`${process.env.api_url}/doctor?ID=&textSearch=${this.textSearch}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+        .get(
+          `${process.env.api_url}/doctor?ID=&textSearch=${this.textSearch}&status=`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
         .then((res) => {
           this.desserts = res.data.data;
         })
@@ -253,12 +357,12 @@ export default {
           })
           .then((res) => {
             this.$refs.confirm.dailogalert("เเก้ไขข้อมูลเรียบร้อย", ``, {
-            icon: "success",
-            color: "success",
-            btnCanceltext: "ตกลง",
-          });
-          this.dialog = false;
-          this.fn_getData();
+              icon: "success",
+              color: "success",
+              btnCanceltext: "ตกลง",
+            });
+            this.dialog = false;
+            this.fn_getData();
           })
           .catch((err) => {
             alert(err);
@@ -269,16 +373,31 @@ export default {
       let formData = new FormData();
       formData.append("ID", ID);
       await axios
-        .post(
-          `${process.env.api_url}/ConfigCon/delete_doctor`, formData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
+        .post(`${process.env.api_url}/ConfigCon/delete_doctor`, formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((res) => {
           this.fn_getData();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    async updateStatus(status, id) {
+      this.formInsert.ID = id;
+      this.formInsert.Status = status ? "0" : "1";
+      let data = JSON.stringify(this.formInsert);
+      await axios
+        .post(`${process.env.api_url}/ConfigCon/update_doctor`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.formInsert.ID = "";
+          this.formInsert.Status = "";
         })
         .catch((err) => {
           alert(err);

@@ -87,7 +87,7 @@
             </thead>
             <tbody>
               <tr v-for="(r, i) in desserts" :key="i">
-                <td class="text-center" nowrap="">{{ r.row }}</td>
+                <td class="text-center" nowrap="">{{ i+1 }}</td>
                 <td nowrap="" class="text-left">{{ r.ID_customer }}</td>
                 <td nowrap="" class="text-left">{{ r.Nickname }}</td>
                 <td nowrap="" class="text-left">
@@ -98,10 +98,7 @@
                     />
                   </v-avatar>
                   <v-avatar size="30" v-else>
-                    <img
-                      :src="`https://avatars0.githubusercontent.com/u/9064066?v=4&s=460`"
-                      alt="John"
-                    />
+                    <v-icon > mdi-account-circle </v-icon>
                   </v-avatar>
                   <span class="pl-3">{{ r.Fisrtname }}&nbsp;{{ r.Lastname }}</span>
                 </td>
@@ -123,7 +120,7 @@
                     text
                     :to="`/customer/profile?type=edit&idcus=${r.ID_customer}`"
                   >
-                    <v-icon> mdi-pencil</v-icon>
+                    <v-icon>mdi-text-box-edit</v-icon>
                   </v-btn>
                   <!-- <v-btn elevation="0" color="error" x-small text @click="fn_delateData(r.ID_customer)">
                     <v-icon> mdi-delete</v-icon>

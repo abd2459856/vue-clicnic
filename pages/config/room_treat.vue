@@ -19,6 +19,11 @@
             @click="
               dialogTitle = 'เพิ่มห้องรักษา';
               dialog = true;
+              FormAdd.ID_room = '';
+              FormAdd.Room_Number = '';
+              FormAdd.Room_Name = '';
+              FormAdd.Room_Detail = '';
+              FormAdd.Room_Status = '';
             "
           >
             <v-icon>mdi-bed-outline</v-icon> เพิ่ม
@@ -227,7 +232,7 @@ export default {
   methods: {
     async fn_getData() {
       await axios
-        .get(`${process.env.api_url}/room?textSearch=${this.textSearch}`, {
+        .get(`${process.env.api_url}/room?textSearch=${this.textSearch}&status=`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -257,13 +262,12 @@ export default {
         })
         .then((res) => {
           this.dialog = false;
-          this.FormAdd = {
-            ID_room: "",
-            Room_Number: "",
-            Room_Name: "",
-            Room_Detail: "",
-            Room_Status: "",
-          };
+          this.FormAdd.ID_room = "";
+          this.FormAdd.Room_Number = "";
+          this.FormAdd.Room_Name = "";
+          this.FormAdd.Room_Detail = "";
+          this.FormAdd.Room_Status = "";
+
           this.fn_getData();
         })
         .catch((err) => {
