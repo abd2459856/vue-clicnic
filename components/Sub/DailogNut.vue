@@ -158,6 +158,7 @@
           text
           @click="
             $refs.form.reset();
+            
             dialog = false;
           "
         >
@@ -353,7 +354,9 @@ export default {
             color: "success",
             btnCanceltext: "ตกลง",
           });
+          this.$refs.form.reset();
           this.dialog = false;
+          
           this.$emit("getdata");
         })
         .catch((err) => {

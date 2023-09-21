@@ -336,7 +336,19 @@
                   min-width="auto"
                 >
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
+                    <v-text-field v-if="FormEdit.Status_nut == 'ยกเลิก'"
+                      v-model="FormEdit.Date_nut"
+                      label="วันที่"
+                      prepend-inner-icon="mdi-calendar"
+                      v-bind="attrs"
+                      v-on="on"
+                      outlined
+                      dense
+                      hide-details
+                      :disabled="FormEdit.Status_nut == 'ยกเลิก'"
+                      class="costomgray"
+                    ></v-text-field>
+                    <v-text-field v-else
                       v-model="FormEdit.Date_nut"
                       label="วันที่"
                       prepend-inner-icon="mdi-calendar"
@@ -348,6 +360,7 @@
                       hide-details
                       :disabled="FormEdit.Status_nut == 'ยกเลิก'"
                       :rules="[(v) => !!v || '']"
+                      required
                       class="costomgray"
                     ></v-text-field>
                   </template>
@@ -360,7 +373,16 @@
                 </v-menu>
               </v-col>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field
+                <v-text-field v-if="FormEdit.Status_nut == 'ยกเลิก'"
+                  label="เวลานัด"
+                  outlined
+                  dense
+                  :disabled="FormEdit.Status_nut == 'ยกเลิก'"
+                  hide-details
+                  type="time"
+                  v-model="FormEdit.start_time"
+                ></v-text-field>
+                <v-text-field v-else
                   label="เวลานัด"
                   outlined
                   dense
@@ -369,7 +391,6 @@
                   type="time"
                   v-model="FormEdit.start_time"
                   :rules="[(v) => !!v || '']"
-
                   required
                 ></v-text-field>
               </v-col>
@@ -617,7 +638,7 @@ export default {
       let Date_nut = new Date(
         `${this.FormEdit.Date_nut} ${this.FormEdit.start_time}`
       );
-      if (Date_nut < curDate) {
+      if ((Date_nut < curDate) && this.FormEdit.Status_nut != 'ยกเลิก') {
         this.$refs.confirm.dailogalert("ไม่สามารถนัดย้อนหลัง", ``, {
           icon: "error",
           color: "error",
@@ -643,6 +664,7 @@ export default {
             }
           );
           this.dialogEdit = false;
+          this.$refs.forms.reset();
           this.fn_getData();
         })
         .catch((err) => {

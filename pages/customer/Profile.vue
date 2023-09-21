@@ -233,34 +233,35 @@ export default {
         this.$refs.der.validate();
         return false;
       }
-      let data = JSON.stringify(this.myDetail);
-      await axios
-        .post(`${process.env.api_url}/customer/insert`, data, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then(async (res) => {
-          this.$refs.confirm.dailogalert("เเก้ไขข้อมูลเรียบร้อย", ``, {
-            icon: "success",
-            color: "success",
-            btnCanceltext: "ตกลง",
+      if (this.myDetail.Fisrtname && this.myDetail.Lastname && this.myDetail.Nickname) {
+        let data = JSON.stringify(this.myDetail);
+        await axios
+          .post(`${process.env.api_url}/customer/insert`, data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then(async (res) => {
+            this.$refs.confirm.dailogalert("เพิ่มฎข้อมูลเรียบร้อย", ``, {
+              icon: "success",
+              color: "success",
+              btnCanceltext: "ตกลง",
+            });
+            this.$router.push({
+              path: "/customer"
+            });
+            // window.location.reload();
+            // this.$router.push({
+            //   path: "/customer/profile",
+            //   query: { type: 'detail', idcus: res.data.ID_customer },
+            // });
+            // await this.fn_getCustomer(res.data.ID_customer)
+            // await this.fn_getprofile(res.data.ID_customer)
+          })
+          .catch((err) => {
+            alert(err);
           });
-          this.$router.push({
-            path: "/customer"
-          });
-          // window.location.reload();
-          // this.$router.push({
-          //   path: "/customer/profile",
-          //   query: { type: 'detail', idcus: res.data.ID_customer },
-          // });
-          // await this.fn_getCustomer(res.data.ID_customer)
-          // await this.fn_getprofile(res.data.ID_customer)
-        })
-        .catch((err) => {
-          alert(err);
-        });
-
+      }
     },
     async fn_upadatecustomer() {
       if (!this.myDetail.Fisrtname && !this.myDetail.Lastname && !this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell) {

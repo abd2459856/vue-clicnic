@@ -1,5 +1,5 @@
 <style scoped>
-::v-deep .costomgray > .v-input__control > .v-input__slot {
+::v-deep .costomgray>.v-input__control>.v-input__slot {
   background-color: white;
 }
 </style>
@@ -13,18 +13,14 @@
         </v-chip>
         <v-spacer />
         <div class="text-center">
-          <v-btn
-            text
-            color="success"
-            @click="
-              dialogTitle = 'เพิ่มหัวข้อการรักษา';
-              dialog = true;
-              FormAdd.ID_treat = '';
-              FormAdd.treat_name = '';
-              FormAdd.treat_detail = '';
-              FormAdd.treat_status = '';
-            "
-          >
+          <v-btn text color="success" @click="
+            dialogTitle = 'เพิ่มหัวข้อการรักษา';
+          dialog = true;
+          FormAdd.ID_treat = '';
+          FormAdd.treat_name = '';
+          FormAdd.treat_detail = '';
+          FormAdd.treat_status = '';
+          ">
             <v-icon>mdi-medication</v-icon> เพิ่ม
           </v-btn>
         </div>
@@ -34,15 +30,8 @@
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
             <v-col md="11">
-              <v-text-field
-                class="costomgray"
-                prepend-inner-icon="mdi-magnify"
-                outlined
-                dense
-                placeholder="หัวข้อการรักษา รายละเอียด"
-                hide-details
-                v-model="textSearch"
-              ></v-text-field>
+              <v-text-field class="costomgray" prepend-inner-icon="mdi-magnify" outlined dense
+                placeholder="หัวข้อการรักษา รายละเอียด" hide-details v-model="textSearch"></v-text-field>
             </v-col>
             <v-col md="1">
               <v-btn elevation="0" color="primary" @click="fn_getData">
@@ -58,34 +47,19 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   ลำดับ
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   หัวข้อการรักษา
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   รายละเอียด
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   สถานะ
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   Action
                 </th>
               </tr>
@@ -96,30 +70,18 @@
                 <td nowrap class="text-left">{{ r.treat_name }}</td>
                 <td nowrap class="text-left">{{ r.treat_detail }}</td>
                 <td nowrap class="d-flex justify-center">
-                  <v-switch
-                    dense
-                    @change="updateStatus(!r.treat_status, r.ID_treat)"
-                    :label="r.treat_status ? `เปิดใช้งาน` : `ปิดใช้งาน`"
-                    v-model="r.treat_status"
-                    color="#D4AF37"
-                    value
-                    inset
-                  ></v-switch>
+                  <v-switch dense @change="updateStatus(!r.treat_status, r.ID_treat)"
+                    :label="r.treat_status ? `เปิดใช้งาน` : `ปิดใช้งาน`" v-model="r.treat_status" color="#D4AF37" value
+                    inset></v-switch>
                 </td>
                 <td nowrap class="text-center">
-                  <v-btn
-                    elevation="0"
-                    color="warning"
-                    small
-                    text
-                    @click="
-                      FormAdd.ID_treat = r.ID_treat;
-                      FormAdd.treat_name = r.treat_name;
-                      FormAdd.treat_detail = r.treat_detail;
-                      dialogTitle = 'แก้ไขหัวข้อการรักษา';
-                      dialog = true;
-                    "
-                  >
+                  <v-btn elevation="0" color="warning" small text @click="
+                    FormAdd.ID_treat = r.ID_treat;
+                  FormAdd.treat_name = r.treat_name;
+                  FormAdd.treat_detail = r.treat_detail;
+                  dialogTitle = 'แก้ไขหัวข้อการรักษา';
+                  dialog = true;
+                  ">
                     <v-icon>mdi-text-box-edit</v-icon>
                   </v-btn>
                 </td>
@@ -133,31 +95,16 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="text-h5"
-            ><v-icon>mdi-calendar-plus-outline</v-icon> {{ dialogTitle }}</span
-          >
+          <span class="text-h5"><v-icon>mdi-calendar-plus-outline</v-icon> {{ dialogTitle }}</span>
         </v-card-title>
         <v-card-text>
           <v-row>
             <v-col md="12" sm="12" cols="12">
-              <v-text-field
-                label="หัวข้อ"
-                outlined
-                dense
-                hide-details
-                :rules="[(v) => !!v || '']"
-                required
-                v-model="FormAdd.treat_name"
-              ></v-text-field>
+              <v-text-field label="หัวข้อ" outlined dense hide-details :rules="[(v) => !!v || '']" required
+                v-model="FormAdd.treat_name"></v-text-field>
             </v-col>
             <v-col md="12" sm="12" cols="12">
-              <v-text-field
-                label="รายละเอียด"
-                outlined
-                dense
-                hide-details
-                v-model="FormAdd.treat_detail"
-              ></v-text-field>
+              <v-text-field label="รายละเอียด" outlined dense hide-details v-model="FormAdd.treat_detail"></v-text-field>
             </v-col>
           </v-row>
         </v-card-text>
@@ -166,12 +113,7 @@
           <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn
-            v-if="FormAdd.ID_treat"
-            color="success"
-            text
-            @click="fn_upadatepackage"
-          >
+          <v-btn v-if="FormAdd.ID_treat" color="success" text @click="fn_upadatepackage">
             Save
           </v-btn>
           <v-btn v-else color="success" text @click="fn_insertpackage">
@@ -231,20 +173,24 @@ export default {
         });
         return false;
       }
-      let data = JSON.stringify(this.FormAdd);
-      await axios
-        .post(`${process.env.api_url}/package/insert`, data, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          this.dialog = false;
-          this.fn_getData();
-        })
-        .catch((err) => {
-          alert(err);
-        });
+
+      if (this.FormAdd.treat_name) {
+        let data = JSON.stringify(this.FormAdd);
+        await axios
+          .post(`${process.env.api_url}/package/insert`, data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            this.dialog = false;
+            this.fn_getData();
+          })
+          .catch((err) => {
+            alert(err);
+          }); s
+      }
+
     },
     async fn_upadatepackage() {
       if (!this.FormAdd.treat_name) {

@@ -1,5 +1,5 @@
 <style scoped>
-::v-deep .costomgray > .v-input__control > .v-input__slot {
+::v-deep .costomgray>.v-input__control>.v-input__slot {
   background-color: white;
 }
 </style>
@@ -13,19 +13,15 @@
         </v-chip>
         <v-spacer />
         <div class="text-center">
-          <v-btn
-            text
-            color="success"
-            @click="
-              dialogTitle = 'เพิ่มห้องรักษา';
-              dialog = true;
-              FormAdd.ID_room = '';
-              FormAdd.Room_Number = '';
-              FormAdd.Room_Name = '';
-              FormAdd.Room_Detail = '';
-              FormAdd.Room_Status = '';
-            "
-          >
+          <v-btn text color="success" @click="
+            dialogTitle = 'เพิ่มห้องรักษา';
+          dialog = true;
+          FormAdd.ID_room = '';
+          FormAdd.Room_Number = '';
+          FormAdd.Room_Name = '';
+          FormAdd.Room_Detail = '';
+          FormAdd.Room_Status = '';
+          ">
             <v-icon>mdi-bed-outline</v-icon> เพิ่ม
           </v-btn>
         </div>
@@ -35,15 +31,8 @@
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
             <v-col md="11">
-              <v-text-field
-                class="costomgray"
-                prepend-inner-icon="mdi-magnify"
-                outlined
-                dense
-                placeholder="ห้องรักษา รายละเอียด"
-                hide-details
-                v-model="textSearch"
-              ></v-text-field>
+              <v-text-field class="costomgray" prepend-inner-icon="mdi-magnify" outlined dense
+                placeholder="ห้องรักษา รายละเอียด" hide-details v-model="textSearch"></v-text-field>
             </v-col>
             <v-col md="1">
               <v-btn elevation="0" color="primary" @click="fn_getData">
@@ -59,40 +48,22 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   ลำดับ
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   เลขห้อง
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   ห้องรักษา
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   รายละเอียด
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   สถานะ
                 </th>
-                <th
-                  style="background-color: #212121"
-                  class="text-center font-weight-bold white--text"
-                >
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   Action
                 </th>
               </tr>
@@ -104,31 +75,19 @@
                 <td nowrap class="text-left">{{ r.Room_Name }}</td>
                 <td nowrap class="text-left">{{ r.Room_Detail }}</td>
                 <td nowrap class="text-center">
-                  <v-switch
-                    dense
-                    @change="updateStatus(!r.Room_Status, r.ID_room)"
-                    :label="r.Room_Status ? `เปิดใช้งาน` : `ปิดใช้งาน`"
-                    v-model="r.Room_Status"
-                    color="#D4AF37"
-                    value
-                    inset
-                  ></v-switch>
+                  <v-switch dense @change="updateStatus(!r.Room_Status, r.ID_room)"
+                    :label="r.Room_Status ? `เปิดใช้งาน` : `ปิดใช้งาน`" v-model="r.Room_Status" color="#D4AF37" value
+                    inset></v-switch>
                 </td>
                 <td nowrap class="text-center">
-                  <v-btn
-                    elevation="0"
-                    color="warning"
-                    small
-                    text
-                    @click="
-                      FormAdd.ID_room = r.ID_room;
-                      FormAdd.Room_Number = r.Room_Number;
-                      FormAdd.Room_Name = r.Room_Name;
-                      FormAdd.Room_Detail = r.Room_Detail;
-                      dialogTitle = 'แก้ไขห้องรักษา';
-                      dialog = true;
-                    "
-                  >
+                  <v-btn elevation="0" color="warning" small text @click="
+                    FormAdd.ID_room = r.ID_room;
+                  FormAdd.Room_Number = r.Room_Number;
+                  FormAdd.Room_Name = r.Room_Name;
+                  FormAdd.Room_Detail = r.Room_Detail;
+                  dialogTitle = 'แก้ไขห้องรักษา';
+                  dialog = true;
+                  ">
                     <v-icon>mdi-text-box-edit</v-icon>
                   </v-btn>
                 </td>
@@ -142,41 +101,21 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="text-h5"
-            ><v-icon>mdi-calendar-plus-outline</v-icon> {{ dialogTitle }}</span
-          >
+          <span class="text-h5"><v-icon>mdi-calendar-plus-outline</v-icon> {{ dialogTitle }}</span>
         </v-card-title>
         <v-card-text>
           <v-form ref="forms" lazy-validation>
             <v-row>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field
-                  label="เลขห้อง"
-                  outlined
-                  dense
-                  hide-details
-                  :rules="[(v) => !!v || '']"
-                  v-model="FormAdd.Room_Number"
-                ></v-text-field>
+                <v-text-field label="เลขห้อง" outlined dense hide-details :rules="[(v) => !!v || '']"
+                  v-model="FormAdd.Room_Number"></v-text-field>
               </v-col>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field
-                  label="ห้องรักษา"
-                  outlined
-                  dense
-                  hide-details
-                  :rules="[(v) => !!v || '']"
-                  v-model="FormAdd.Room_Name"
-                ></v-text-field>
+                <v-text-field label="ห้องรักษา" outlined dense hide-details :rules="[(v) => !!v || '']"
+                  v-model="FormAdd.Room_Name"></v-text-field>
               </v-col>
               <v-col md="12" sm="12" cols="12">
-                <v-text-field
-                  label="รายละเอียด"
-                  outlined
-                  dense
-                  hide-details
-                  v-model="FormAdd.Room_Detail"
-                ></v-text-field>
+                <v-text-field label="รายละเอียด" outlined dense hide-details v-model="FormAdd.Room_Detail"></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -186,12 +125,7 @@
           <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn
-            v-if="FormAdd.ID_room"
-            color="success"
-            text
-            @click="fn_upadateroom"
-          >
+          <v-btn v-if="FormAdd.ID_room" color="success" text @click="fn_upadateroom">
             Save
           </v-btn>
           <v-btn v-else color="success" text @click="fn_insertroom">
@@ -253,26 +187,29 @@ export default {
         });
         return false;
       }
-      let data = JSON.stringify(this.FormAdd);
-      await axios
-        .post(`${process.env.api_url}/room/insert`, data, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          this.dialog = false;
-          this.FormAdd.ID_room = "";
-          this.FormAdd.Room_Number = "";
-          this.FormAdd.Room_Name = "";
-          this.FormAdd.Room_Detail = "";
-          this.FormAdd.Room_Status = "";
+      if (this.FormAdd.Room_Number && this.FormAdd.Room_Name) {
+        let data = JSON.stringify(this.FormAdd);
+        await axios
+          .post(`${process.env.api_url}/room/insert`, data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            this.dialog = false;
+            this.FormAdd.ID_room = "";
+            this.FormAdd.Room_Number = "";
+            this.FormAdd.Room_Name = "";
+            this.FormAdd.Room_Detail = "";
+            this.FormAdd.Room_Status = "";
 
-          this.fn_getData();
-        })
-        .catch((err) => {
-          alert(err);
-        });
+            this.fn_getData();
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
+
     },
     async fn_upadateroom() {
       if (!this.FormAdd.Room_Number || !this.FormAdd.Room_Name) {
