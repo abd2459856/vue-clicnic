@@ -212,17 +212,18 @@
                 <td class="text-left">{{ item.D_Name }}</td>
                 <td class="text-center">
                   <v-chip
-                  dark
+                    dark
                     :color="
-                      item.Status_nut == 'มาถึง' || item.Status_nut == 'เข้าตรวจ'
+                      item.Status_nut == 'มาถึง' ||
+                      item.Status_nut == 'เข้าตรวจ'
                         ? 'warning'
                         : item.Status_nut == 'ตรวจเสร็จ'
                         ? 'success'
-                        :item.Status_nut ==  'เลื่อนนัด'
-                        ?'purple'
-                        :item.Status_nut ==  'ยกเลิก'
-                        ?'error'
-                        :'cyan'
+                        : item.Status_nut == 'เลื่อนนัด'
+                        ? 'purple'
+                        : item.Status_nut == 'ยกเลิก'
+                        ? 'error'
+                        : 'cyan'
                     "
                     small
                     >{{ item.Status_nut }}</v-chip
@@ -236,7 +237,12 @@
                 </td>
                 <td class="text-center">
                   <v-btn
-                  :disabled="!(item.Status_nut=='นัดหมาย'||item.Status_nut=='เลื่อนนัด')"
+                    :disabled="
+                      !(
+                        item.Status_nut == 'นัดหมาย' ||
+                        item.Status_nut == 'เลื่อนนัด'
+                      )
+                    "
                     elevation="0"
                     color="error"
                     small
@@ -336,7 +342,8 @@
                   min-width="auto"
                 >
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field v-if="FormEdit.Status_nut == 'ยกเลิก'"
+                    <v-text-field
+                      v-if="FormEdit.Status_nut == 'ยกเลิก'"
                       v-model="FormEdit.Date_nut"
                       label="วันที่"
                       prepend-inner-icon="mdi-calendar"
@@ -348,7 +355,8 @@
                       :disabled="FormEdit.Status_nut == 'ยกเลิก'"
                       class="costomgray"
                     ></v-text-field>
-                    <v-text-field v-else
+                    <v-text-field
+                      v-else
                       v-model="FormEdit.Date_nut"
                       label="วันที่"
                       prepend-inner-icon="mdi-calendar"
@@ -373,7 +381,8 @@
                 </v-menu>
               </v-col>
               <v-col md="6" sm="12" cols="12">
-                <v-text-field v-if="FormEdit.Status_nut == 'ยกเลิก'"
+                <v-text-field
+                  v-if="FormEdit.Status_nut == 'ยกเลิก'"
                   label="เวลานัด"
                   outlined
                   dense
@@ -382,7 +391,8 @@
                   type="time"
                   v-model="FormEdit.start_time"
                 ></v-text-field>
-                <v-text-field v-else
+                <v-text-field
+                  v-else
                   label="เวลานัด"
                   outlined
                   dense
@@ -481,6 +491,73 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogCost" width="700">
+      <v-card>
+        <v-card-title class="text-h5"> ค่าใช้จ่าย </v-card-title>
+
+        <v-card-text>
+          <v-divider style="border-top: 1px dashed rgba(0, 0, 0, 0.12)" />
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th
+                    style="background-color: #212121"
+                    class="text-center font-weight-bold white--text"
+                  >
+                    ลำดับ
+                  </th>
+                  <th
+                    style="background-color: #212121"
+                    class="text-center font-weight-bold white--text"
+                  >
+                    รายการ
+                  </th>
+                  <th
+                    style="background-color: #212121"
+                    class="text-center font-weight-bold white--text"
+                  >
+                    ราคา
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, i) in expenses" :key="i">
+                  <td nowrap class="text-center">{{ i + 1 }}</td>
+                  <td nowrap class="text-left">{{ item.treat_name }}</td>
+                  <td nowrap class="text-right">
+                    {{ numberFormat(item.treat_price, 2) }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-right">รวม</td>
+                  <td colspan="2" class="text-right">
+                    {{
+                      numberFormat(
+                        expenses.reduce(
+                          (a, b) => a + parseFloat(b.treat_price),
+                          0
+                        ),
+                        2
+                      )
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="fn_save_expenses(myItem)">
+            ชำระเงิน
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <ConfirmDlg ref="confirm" />
   </div>
 </template>
@@ -504,9 +581,10 @@ export default {
       menuEdit: false,
       dialog: false,
       dialogEdit: false,
+      dialogCost: false,
       currentDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .substr(0, 10),
+        .toISOString()
+        .substr(0, 10),
       desserts: [],
       FormEdit: {
         Date_nut: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -528,6 +606,8 @@ export default {
           .toISOString()
           .substr(0, 10),
       },
+      expenses: [],
+      myItem:{}
     };
   },
   methods: {
@@ -601,6 +681,25 @@ export default {
       // alert(item)
     },
     async fn_CustomerFinish(item) {
+      this.myItem =item;
+      this.dialogCost = true;
+      await axios
+        .get(`${process.env.api_url}/appointment/expenses`, {
+          params: item,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.expenses = res.data.data;
+        })
+        .catch((err) => {
+          alert(err);
+        });
+      
+    },
+    async fn_save_expenses(item) {
+      this.dialogCost = false;
       item.Date_finish = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
       ).toISOString();
@@ -623,7 +722,6 @@ export default {
         .catch((err) => {
           alert(err);
         });
-      // alert(item)
     },
     async fn_updateNut() {
       if (!this.$refs.forms.validate()) {
@@ -638,7 +736,7 @@ export default {
       let Date_nut = new Date(
         `${this.FormEdit.Date_nut} ${this.FormEdit.start_time}`
       );
-      if ((Date_nut < curDate) && this.FormEdit.Status_nut != 'ยกเลิก') {
+      if (Date_nut < curDate && this.FormEdit.Status_nut != "ยกเลิก") {
         this.$refs.confirm.dailogalert("ไม่สามารถนัดย้อนหลัง", ``, {
           icon: "error",
           color: "error",

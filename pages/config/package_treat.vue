@@ -20,6 +20,7 @@
           FormAdd.treat_name = '';
           FormAdd.treat_detail = '';
           FormAdd.treat_status = '';
+          FormAdd.treat_price = '';
           ">
             <v-icon>mdi-medication</v-icon> เพิ่ม
           </v-btn>
@@ -54,6 +55,9 @@
                   หัวข้อการรักษา
                 </th>
                 <th style="background-color: #212121" class="text-center font-weight-bold white--text">
+                  ราคา
+                </th>
+                <th style="background-color: #212121" class="text-center font-weight-bold white--text">
                   รายละเอียด
                 </th>
                 <th style="background-color: #212121" class="text-center font-weight-bold white--text">
@@ -68,6 +72,7 @@
               <tr v-for="(r, i) in desserts" :key="i">
                 <td class="text-center" nowrap>{{ i + 1 }}</td>
                 <td nowrap class="text-left">{{ r.treat_name }}</td>
+                <td nowrap class="text-right">{{ numberFormat(r.treat_price) }}</td>
                 <td nowrap class="text-left">{{ r.treat_detail }}</td>
                 <td nowrap class="d-flex justify-center">
                   <v-switch dense @change="updateStatus(!r.treat_status, r.ID_treat)"
@@ -79,6 +84,7 @@
                     FormAdd.ID_treat = r.ID_treat;
                   FormAdd.treat_name = r.treat_name;
                   FormAdd.treat_detail = r.treat_detail;
+                  FormAdd.treat_price = r.treat_price;
                   dialogTitle = 'แก้ไขหัวข้อการรักษา';
                   dialog = true;
                   ">
@@ -102,6 +108,9 @@
             <v-col md="12" sm="12" cols="12">
               <v-text-field label="หัวข้อ" outlined dense hide-details :rules="[(v) => !!v || '']" required
                 v-model="FormAdd.treat_name"></v-text-field>
+            </v-col>
+            <v-col md="12" sm="12" cols="12">
+              <v-text-field label="ราคา" @keypress="onlyNumber" outlined dense hide-details v-model="FormAdd.treat_price" :rules="[(v) => !!v || '']" required></v-text-field>
             </v-col>
             <v-col md="12" sm="12" cols="12">
               <v-text-field label="รายละเอียด" outlined dense hide-details v-model="FormAdd.treat_detail"></v-text-field>
@@ -146,6 +155,7 @@ export default {
       treat_name: "",
       treat_detail: "",
       treat_status: "",
+      treat_price: "",
     },
     textSearch: "",
   }),
@@ -165,7 +175,7 @@ export default {
         });
     },
     async fn_insertpackage() {
-      if (!this.FormAdd.treat_name) {
+      if (!this.FormAdd.treat_name || !this.FormAdd.treat_price) {
         this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
           icon: "error",
           color: "error",
@@ -188,12 +198,12 @@ export default {
           })
           .catch((err) => {
             alert(err);
-          }); s
+          }); 
       }
 
     },
     async fn_upadatepackage() {
-      if (!this.FormAdd.treat_name) {
+      if (!this.FormAdd.treat_name || !this.FormAdd.treat_price) {
         this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
           icon: "error",
           color: "error",
