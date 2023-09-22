@@ -97,6 +97,15 @@
                   >
                     <v-icon>mdi-text-box-edit</v-icon>
                   </v-btn>
+                  <v-btn
+                    elevation="0"
+                    color="teal lighten-1"
+                    x-small
+                    text
+                    @click="loadExcel(r.ID_customer)"
+                  >
+                    <v-icon>mdi-file-excel-outline</v-icon>
+                  </v-btn>
                   <!-- <v-btn elevation="0" color="error" x-small text @click="fn_delateData(r.ID_customer)">
                     <v-icon> mdi-delete</v-icon>
                   </v-btn> -->
@@ -174,6 +183,14 @@ export default {
           alert(err);
         });
     },
+    async loadExcel(ID_customer) {
+            // window.location.replace(
+            //     `${process.env.api_url}Customer_con/Export_Excel?ID_customer=${ID_customer}`
+            // );
+            window.open(
+                `${process.env.api_url}/Customer_con/Export_Excel?ID_customer=${ID_customer}`, "_blank"
+            );
+        },
   },
   mounted() {
     this.fn_getData()
