@@ -68,6 +68,15 @@
           </v-list-item-icon>
           <v-list-item-title>ห้องรักษา</v-list-item-title>
         </v-list-item>
+        <v-list-item
+          to="/report"
+          router
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-file-chart</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>รายงาน</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-footer :absolute="!fixed" app>

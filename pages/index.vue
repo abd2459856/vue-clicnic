@@ -75,7 +75,7 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
                     v-model="formSearch.dateEnd"
-                    label="ตั้งแต่วันที่"
+                    label="ถึงวันที่"
                     prepend-inner-icon="mdi-calendar"
                     readonly
                     v-bind="attrs"
