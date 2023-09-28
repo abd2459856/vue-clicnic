@@ -30,11 +30,11 @@
       <v-card-text>
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
-            <v-col md="11">
+            <v-col md="11" sm="12" cols="12">
               <v-text-field class="costomgray" prepend-inner-icon="mdi-magnify" outlined dense
                 placeholder="หัวข้อการรักษา รายละเอียด" hide-details v-model="textSearch"></v-text-field>
             </v-col>
-            <v-col md="1">
+            <v-col md="1" sm="12" cols="12">
               <v-btn elevation="0" color="primary" @click="fn_getData">
                 <v-icon>mdi-magnify</v-icon>
                 ค้นหา

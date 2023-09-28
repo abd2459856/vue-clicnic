@@ -22,7 +22,7 @@
       <v-card-text>
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
-            <v-col md="7">
+            <v-col md="7" sm="12" cols="12">
               <v-text-field
                 class="costomgray"
                 prepend-inner-icon="mdi-magnify"
@@ -33,7 +33,7 @@
                 v-model="formSearch.textSearch"
               ></v-text-field>
             </v-col>
-            <v-col md="2">
+            <v-col md="2" sm="12" cols="12">
               <v-menu
                 v-model="menuStart"
                 :close-on-content-click="false"
@@ -63,7 +63,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col md="2">
+            <v-col md="2" sm="12" cols="12">
               <v-menu
                 v-model="menuEnd"
                 :close-on-content-click="false"
@@ -93,7 +93,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col md="1">
+            <v-col md="1" sm="6" cols="12">
               <v-btn elevation="0" color="primary" @click="fn_getData()">
                 <v-icon>mdi-magnify</v-icon>
                 ค้นหา
@@ -109,66 +109,77 @@
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   ลำดับ
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   รหัสลูกค้า
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   ชื่อ-นามสกุล
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   เบอร์โทรศัพท์
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   แพทย์
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   สถานะ
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   เวลานัด
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   เลื่อน/ยกเลิก
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   มาถึง
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   เข้าตรวจ
                 </th>
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   ตรวจเสร็จ
                 </th>
@@ -176,6 +187,7 @@
                 <th
                   style="background-color: #212121"
                   class="text-center font-weight-bold white--text"
+                  nowrap
                 >
                   หมายเหตุ
                 </th>
@@ -189,9 +201,9 @@
                   item.Date_finish ? '#E8F5E9' : item.Date_come ? '#FFF3E0' : ''
                 };`"
               >
-                <td class="text-center">{{ i + 1 }}</td>
-                <td class="text-left">{{ item.ID_customer }}</td>
-                <td class="text-left">
+                <td nowrap class="text-center">{{ i + 1 }}</td>
+                <td nowrap class="text-left">{{ item.ID_customer }}</td>
+                <td nowrap class="text-left">
                   <v-btn
                     icon
                     :to="`/customer/profile?type=detail&idcus=${item.ID_customer}`"
@@ -208,9 +220,9 @@
                   </v-btn>
                   <span class="pl-3">{{ item.C_Name }}</span>
                 </td>
-                <td class="text-left">{{ item.tell }}</td>
-                <td class="text-left">{{ item.D_Name }}</td>
-                <td class="text-center">
+                <td nowrap class="text-left">{{ item.tell }}</td>
+                <td nowrap class="text-left">{{ item.D_Name }}</td>
+                <td nowrap class="text-center">
                   <v-chip
                     dark
                     :color="
@@ -229,13 +241,13 @@
                     >{{ item.Status_nut }}</v-chip
                   >
                 </td>
-                <td class="text-center">
+                <td nowrap class="text-center">
                   {{ DateFormat(item.Date_nut, "DD-MM-YYYY") }}
                   <span style="color: grey">
                     {{ DateFormat(item.Date_nut, "HH:mm A") }}</span
                   >
                 </td>
-                <td class="text-center">
+                <td nowrap class="text-center">
                   <v-btn
                     :disabled="
                       !(
@@ -255,7 +267,7 @@
                     <v-icon>mdi-text-box-edit</v-icon>
                   </v-btn>
                 </td>
-                <td class="text-center">
+                <td nowrap class="text-center">
                   <span v-if="item.Date_come">{{
                     DateFormat(item.Date_come, "HH:mm A")
                   }}</span>
@@ -269,7 +281,7 @@
                     มาถึง
                   </v-btn>
                 </td>
-                <td class="text-center">
+                <td nowrap class="text-center">
                   <v-btn
                     v-if="item.Date_come && !item.Date_inspect"
                     elevation="0"
@@ -283,7 +295,7 @@
                     DateFormat(item.Date_inspect, "HH:mm A")
                   }}</span>
                 </td>
-                <td class="text-center">
+                <td nowrap class="text-center">
                   <v-btn
                     v-if="
                       item.Date_come && item.Date_inspect && !item.Date_finish
@@ -299,7 +311,7 @@
                     DateFormat(item.Date_finish, "HH:mm A")
                   }}</span>
                 </td>
-                <td class="text-left">{{ item.Remark }}</td>
+                <td nowrap class="text-left">{{ item.Remark }}</td>
               </tr>
             </tbody>
           </template>
@@ -680,26 +692,25 @@ export default {
         });
       // alert(item)
     },
-    async fn_CustomerFinish(item) {
-      this.myItem =item;
-      this.dialogCost = true;
-      await axios
-        .get(`${process.env.api_url}/appointment/expenses`, {
-          params: item,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          this.expenses = res.data.data;
-        })
-        .catch((err) => {
-          alert(err);
-        });
+    // async fn_CustomerFinish(item) {
+    //   this.myItem =item;
+    //   this.dialogCost = true;
+    //   await axios
+    //     .get(`${process.env.api_url}/appointment/expenses`, {
+    //       params: item,
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     })
+    //     .then((res) => {
+    //       this.expenses = res.data.data;
+    //     })
+    //     .catch((err) => {
+    //       alert(err);
+    //     });
       
-    },
-    async fn_save_expenses(item) {
-      this.dialogCost = false;
+    // },
+    async fn_CustomerFinish(item) {
       item.Date_finish = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
       ).toISOString();
@@ -722,7 +733,33 @@ export default {
         .catch((err) => {
           alert(err);
         });
+      
     },
+    // async fn_save_expenses(item) {
+    //   this.dialogCost = false;
+    //   item.Date_finish = new Date(
+    //     Date.now() - new Date().getTimezoneOffset() * 60000
+    //   ).toISOString();
+    //   item.Status_nut = "ตรวจเสร็จ";
+    //   let data = JSON.stringify({
+    //     Date_finish: item.Date_come,
+    //     Status_nut: item.Status_nut,
+    //     ID_nut: item.ID_nut,
+    //   });
+    //   await axios
+    //     .post(`${process.env.api_url}/appointment/update`, data, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     })
+    //     .then((res) => {
+    //       this.dialog = false;
+    //       this.$emit("getdata");
+    //     })
+    //     .catch((err) => {
+    //       alert(err);
+    //     });
+    // },
     async fn_updateNut() {
       if (!this.$refs.forms.validate()) {
         this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
