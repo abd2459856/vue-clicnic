@@ -72,7 +72,7 @@
               </v-tab-item>
               <v-tab-item>
                 <v-card-text>
-                  <Treatment v-bind:myProfile="myProfile"></Treatment>
+                  <Treatment ref="treatment" v-bind:myProfile="myProfile"></Treatment>
                 </v-card-text>
               </v-tab-item>
             </v-tabs-items>
@@ -80,7 +80,7 @@
         </v-col>
       </v-row>
     </div>
-    <DailogNut ref="dailognut" @getdata="fn_getprofile($route.query.idcus)"></DailogNut>
+    <DailogNut ref="dailognut" @getdata="fn_getTreatment()"></DailogNut>
     <v-dialog v-model="dialog_insert" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -203,6 +203,7 @@ export default {
         })
         .then((res) => {
           this.myProfile = res.data.data[0];
+          
         })
         .catch((err) => {
           alert(err);
@@ -312,6 +313,9 @@ export default {
       this.$refs.dailognut.FormAdd.ID_customer = this.myDetail.ID_customer
       this.$refs.dailognut.FormAdd.name = `${this.myDetail.Fisrtname} ${this.myDetail.Lastname}`
       this.$refs.dailognut.FormAdd.tel = this.myDetail.tell
+    },
+    fn_getTreatment() {
+      this.$refs.treatment.fn_getData(this.$route.query.idcus);
     },
   },
   async mounted() {

@@ -22,11 +22,11 @@
       <v-card-text>
         <v-card color="rgb(237 235 215)" elevation="0" class="pa-5 mb-3">
           <v-row>
-            <v-col md="11">
+            <v-col md="11" sm="12" cols="12">
               <v-text-field class="costomgray" prepend-inner-icon="mdi-magnify" outlined dense
                 placeholder="เบอร์โทรศัพท์ ชื่อ-นามสกุล เลขบัตรประชาชน" hide-details v-model="textSearch"></v-text-field>
             </v-col>
-            <v-col md="1">
+            <v-col md="1" sm="12" cols="12">
               <v-btn elevation="0" color="primary" @click="fn_getData">
                 <v-icon>mdi-magnify</v-icon>
                 ค้นหา
@@ -65,10 +65,10 @@
             </thead>
             <tbody>
               <tr v-for="(r, i) in desserts" :key="i">
-                <td class="text-center" nowrap="">{{ i+1 }}</td>
-                <td nowrap="" class="text-left">{{ r.ID_customer }}</td>
-                <td nowrap="" class="text-left">{{ r.Nickname }}</td>
-                <td nowrap="" class="text-left">
+                <td class="text-center" nowrap>{{ i+1 }}</td>
+                <td nowrap class="text-left">{{ r.ID_customer }}</td>
+                <td nowrap class="text-left">{{ r.Nickname }}</td>
+                <td nowrap class="text-left">
                   <v-avatar size="30" v-if="r.img_name">
                     <img :src="`http://localhost/api-myClinic/${r.img_name}`" alt="John" />
                   </v-avatar>
@@ -77,13 +77,13 @@
                   </v-avatar>
                   <span class="pl-3">{{ r.Fisrtname }}&nbsp;{{ r.Lastname }}</span>
                 </td>
-                <td nowrap="" class="text-left">{{ r.tell }}</td>
+                <td nowrap class="text-left">{{ r.tell }}</td>
                 <td nowrap class="d-flex justify-center">
                   <v-switch dense @change="updateStatus(!r.status, r.ID_customer)"
                     :label="r.status == 1 ? `เปิดใช้งาน` : `ปิดใช้งาน`" v-model="r.status" color="#D4AF37" value
                     inset></v-switch>
                 </td>
-                <td nowrap="" class="text-center">
+                <td nowrap class="text-center">
                   <v-btn elevation="0" color="info" x-small text
                     :to="`/customer/profile?type=detail&idcus=${r.ID_customer}`">
                     <v-icon> mdi-eye</v-icon>

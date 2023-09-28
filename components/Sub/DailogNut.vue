@@ -120,8 +120,7 @@
                 hide-details
                 @change="fn_changeCusOP"
                 :disabled="type"
-                required
-                :rules="[(v) => !!v || 'เลือกคนไข้']"
+                
               ></v-autocomplete>
             </v-col>
           </v-row>

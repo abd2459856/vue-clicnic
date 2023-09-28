@@ -84,10 +84,10 @@
           >
             รายได้ทั้งหมด
           </v-card-title>
-          <div class="text-center">
-            <h1 style="color: green">{{ numberFormat(sumCost, 2) }} บาท</h1>
-          </div>
-          <div class="text-center">
+          <br />
+          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
+            <div class="text-center">
+              <h1 style="color: green">{{ numberFormat(sumCost, 2) }} บาท</h1>
             <p>
               จำนวน
               {{
@@ -98,7 +98,6 @@
               รายการ
             </p>
           </div>
-          <div class="pl-3 pr-3">
             <table width="100%">
               <tr class="" v-for="(item, i) in sumall" :key="i">
                 <td width="30%" class="text-left">{{ item.treat_name }}</td>
@@ -124,7 +123,7 @@
             รายการเงินได้สูงสุด
           </v-card-title>
           <br />
-          <div class="pl-3 pr-3">
+          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
             <table width="100%">
               <tr class="" v-for="(item, i) in maxsum" :key="i">
                 <td width="30%" class="text-left">{{ item.treat_name }}</td>
@@ -149,7 +148,7 @@
             รายการยอดนิยม
           </v-card-title>
           <br />
-          <div class="pl-3 pr-3">
+          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
             <table width="100%">
               <tr class="" v-for="(item, i) in sumhit" :key="i">
                 <td width="30%" class="text-left">{{ item.treat_name }}</td>
@@ -174,7 +173,7 @@
             ผู้ใช้จ่ายสูงสุด
           </v-card-title>
           <br />
-          <div class="pl-3 pr-3">
+          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
             <table width="100%">
               <tr class="" v-for="(item, i) in maxcus" :key="i">
                 <td width="30%" class="text-left">
@@ -223,8 +222,12 @@ export default {
     textSearch: "",
     menuStart: false,
     menuEnd: false,
-    dateStart: "",
-    dateEnd: "",
+    dateStart: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10),
+    dateEnd: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10),
   }),
   methods: {
     async fn_getData() {
