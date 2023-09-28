@@ -105,7 +105,7 @@
             <div v-if="get_img != ''" tyle="height: 85vh; overflow: auto">
               <v-row>
                 <v-col v-for="n in get_img" :key="n" cols="12">
-                  <v-img :src="`http://localhost/api-myClinic/${n.filepath}`" :aspect-ratio="16 / 8"
+                  <v-img :src="`http://191.191.209.51/api-myClinic/${n.filepath}`" :aspect-ratio="16 / 8"
                     class="grey lighten-2">
                     <template v-slot:placeholder>
                       <v-row class="fill-height ma-0" align="center" justify="center">
