@@ -85,19 +85,31 @@
             รายได้ทั้งหมด
           </v-card-title>
           <br />
-          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
+          <div class="pl-3 pr-3" style="height: 30vh; overflow: auto">
+            <div class="text-right">
+              <v-btn
+                elevation="0"
+                color="teal lighten-1"
+                @click="loadExcelALL()"
+                small
+                dark
+              >
+                <v-icon>mdi-file-excel-outline</v-icon>
+                Excel
+              </v-btn>
+            </div>
             <div class="text-center">
               <h1 style="color: green">{{ numberFormat(sumCost, 2) }} บาท</h1>
-            <p>
-              จำนวน
-              {{
-                numberFormat(
-                  sumall.reduce((a, b) => a + parseFloat(b.amount), 0)
-                )
-              }}
-              รายการ
-            </p>
-          </div>
+              <p>
+                จำนวน
+                {{
+                  numberFormat(
+                    sumall.reduce((a, b) => a + parseFloat(b.amount), 0)
+                  )
+                }}
+                รายการ
+              </p>
+            </div>
             <table width="100%">
               <tr class="" v-for="(item, i) in sumall" :key="i">
                 <td width="30%" class="text-left">{{ item.treat_name }}</td>
@@ -123,7 +135,7 @@
             รายการเงินได้สูงสุด
           </v-card-title>
           <br />
-          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
+          <div class="pl-3 pr-3" style="height: 30vh; overflow: auto">
             <table width="100%">
               <tr class="" v-for="(item, i) in maxsum" :key="i">
                 <td width="30%" class="text-left">{{ item.treat_name }}</td>
@@ -148,7 +160,7 @@
             รายการยอดนิยม
           </v-card-title>
           <br />
-          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
+          <div class="pl-3 pr-3" style="height: 30vh; overflow: auto">
             <table width="100%">
               <tr class="" v-for="(item, i) in sumhit" :key="i">
                 <td width="30%" class="text-left">{{ item.treat_name }}</td>
@@ -173,7 +185,7 @@
             ผู้ใช้จ่ายสูงสุด
           </v-card-title>
           <br />
-          <div class="pl-3 pr-3" style="height: 30vh;overflow: auto;">
+          <div class="pl-3 pr-3" style="height: 30vh; overflow: auto">
             <table width="100%">
               <tr class="" v-for="(item, i) in maxcus" :key="i">
                 <td width="30%" class="text-left">
@@ -223,11 +235,11 @@ export default {
     menuStart: false,
     menuEnd: false,
     dateStart: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .substr(0, 10),
+      .toISOString()
+      .substr(0, 10),
     dateEnd: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-          .toISOString()
-          .substr(0, 10),
+      .toISOString()
+      .substr(0, 10),
   }),
   methods: {
     async fn_getData() {
@@ -257,6 +269,12 @@ export default {
     async loadExcel(ID_customer) {
       window.open(
         `${process.env.api_url}/Customer_con/Export_Excel?ID_customer=${ID_customer}`,
+        "_blank"
+      );
+    },
+    async loadExcelALL() {
+      window.open(
+        `${process.env.api_url}/Report_con/Export_ExcelAll?dateStart=${this.dateStart}&dateEnd=${this.dateEnd}`,
         "_blank"
       );
     },
