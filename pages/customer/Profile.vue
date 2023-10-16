@@ -19,7 +19,7 @@
             </v-avatar>
             <v-avatar size="200" style="border: 3px solid #d4af37; z-index: 1" v-else
               @click="model_dialog(myProfile.ID_customer)">
-              <img :src="`http://localhost/api-myClinic/${myDetail.img_name}`" alt="John" />
+              <img :src="`http://191.191.209.51/api-myClinic/${myDetail.img_name}`" alt="John" />
             </v-avatar>
 
           </div>
