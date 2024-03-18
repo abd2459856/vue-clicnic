@@ -157,7 +157,7 @@
           </v-toolbar>
           <v-card-text>
             <v-carousel v-if="items">
-              <v-carousel-item :src="`http://191.191.209.51/api-myClinic/${items}`" reverse-transition="fade-transition"
+              <v-carousel-item :src="`${api_url_img}/api-myClinic/${items}`" reverse-transition="fade-transition"
                 transition="fade-transition"></v-carousel-item>
             </v-carousel>
             <span v-else>ไม่มีภาพ</span>
