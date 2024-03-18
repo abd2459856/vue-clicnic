@@ -70,7 +70,7 @@
                 <td nowrap class="text-left">{{ r.Nickname }}</td>
                 <td nowrap class="text-left">
                   <v-avatar size="30" v-if="r.img_name">
-                    <img :src="`${api_url_img}/api-myClinic/${r.img_name}`" alt="John" />
+                    <img :src="`http://localhost/api-myClinic/${r.img_name}`" alt="John" />
                   </v-avatar>
                   <v-avatar size="30" v-else>
                     <v-icon > mdi-account-circle </v-icon>

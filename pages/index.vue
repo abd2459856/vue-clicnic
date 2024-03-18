@@ -210,7 +210,7 @@
                   >
                     <v-avatar size="30" v-if="item.img_name">
                       <img
-                        :src="`${api_url_img}/api-myClinic/${item.img_name}`"
+                        :src="`http://localhost/api-myClinic/${item.img_name}`"
                         alt="John"
                       />
                     </v-avatar>
