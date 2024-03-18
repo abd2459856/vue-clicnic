@@ -19,7 +19,7 @@
             </v-avatar>
             <v-avatar size="200" style="border: 3px solid #d4af37; z-index: 1" v-else
               @click="model_dialog(myProfile.ID_customer)">
-              <img :src="`${api_url_img}/api-myClinic/${myDetail.img_name}`" alt="John" />
+              <img :src="`http://localhost/api-myClinic/${myDetail.img_name}`" alt="John" />
             </v-avatar>
 
           </div>
@@ -234,7 +234,7 @@ export default {
         this.$refs.der.validate();
         return false;
       }
-      if (this.myDetail.Fisrtname && this.myDetail.Lastname && this.myDetail.Nickname) {
+      if (this.myDetail.Fisrtname && this.myDetail.Lastname && this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell) {
         let data = JSON.stringify(this.myDetail);
         await axios
           .post(`${process.env.api_url}/customer/insert`, data, {
