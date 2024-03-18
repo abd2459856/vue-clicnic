@@ -643,9 +643,10 @@ export default {
     },
 
     async fn_CustomerCome(item) {
-      item.Date_come = new Date(
+      let dateNow = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
       ).toISOString();
+      item.Date_come = `${dateNow.substring(0,10)} ${dateNow.substring(11,16)}` ;
       item.Status_nut = "มาถึง";
       let data = JSON.stringify({
         Date_come: item.Date_come,
@@ -668,12 +669,13 @@ export default {
       // alert(item)
     },
     async fn_CustomerInspect(item) {
-      item.Date_inspect = new Date(
+      let dateNow = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
       ).toISOString();
+      item.Date_inspect = `${dateNow.substring(0,10)} ${dateNow.substring(11,16)}` ;
       item.Status_nut = "เข้าตรวจ";
       let data = JSON.stringify({
-        Date_inspect: item.Date_come,
+        Date_inspect: item.Date_inspect,
         Status_nut: item.Status_nut,
         ID_nut: item.ID_nut,
       });
@@ -711,12 +713,13 @@ export default {
       
     // },
     async fn_CustomerFinish(item) {
-      item.Date_finish = new Date(
+     let dateNow = new Date(
         Date.now() - new Date().getTimezoneOffset() * 60000
       ).toISOString();
+      item.Date_finish = `${dateNow.substring(0,10)} ${dateNow.substring(11,16)}` ;
       item.Status_nut = "ตรวจเสร็จ";
       let data = JSON.stringify({
-        Date_finish: item.Date_come,
+        Date_finish: item.Date_finish,
         Status_nut: item.Status_nut,
         ID_nut: item.ID_nut,
       });

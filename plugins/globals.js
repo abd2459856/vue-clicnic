@@ -12,7 +12,7 @@ Vue.mixin({
       // return format(date, formatDate)
       var date2 = moment(date);
       // console.log(date2.format(formatDate))
-      return date2.utc().format(formatDate);
+      return date2.format(formatDate);
     },
     DateFormatShow(date) {
       if (!date || date == "") return "";
