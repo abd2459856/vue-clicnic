@@ -272,7 +272,7 @@
                     DateFormat(item.Date_come, "HH:mm A")
                   }}</span>
                   <v-btn
-                    v-else
+                    v-else-if="item.Status_nut != 'ยกเลิก'"
                     elevation="0"
                     color="info"
                     small
