@@ -66,7 +66,7 @@
             <tbody>
               <tr v-for="(r, i) in desserts" :key="i">
                 <td class="text-center" nowrap>{{ i+1 }}</td>
-                <td nowrap class="text-left">{{ r.ID_customer }}</td>
+                <td nowrap class="text-left">{{ r.Customer_ID_Show }}</td>
                 <td nowrap class="text-left">{{ r.Nickname }}</td>
                 <td nowrap class="text-left">
                   <v-avatar size="30" v-if="r.img_name">

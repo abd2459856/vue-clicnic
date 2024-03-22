@@ -32,7 +32,7 @@
               </p>
               <p>
                 <v-icon color="#D4AF37" small>mdi-id-card</v-icon>&nbsp;
-                {{ myProfile.ID_customer }}
+                {{ myProfile.Customer_ID_Show }}
               </p>
               <p>
                 <v-icon color="#D4AF37" small>mdi-email</v-icon>&nbsp;
@@ -224,7 +224,7 @@ export default {
         });
     },
     async fn_savecustomer() {
-      if (!this.myDetail.Fisrtname && !this.myDetail.Lastname && !this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell) {
+      if (!this.myDetail.Fisrtname && !this.myDetail.Lastname && !this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell && !this.myDetail.Customer_ID_Show) {
         this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
           icon: "error",
           color: "error",
@@ -234,7 +234,7 @@ export default {
         this.$refs.der.validate();
         return false;
       }
-      if (this.myDetail.Fisrtname && this.myDetail.Lastname && this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell) {
+      if (this.myDetail.Fisrtname && this.myDetail.Lastname && this.myDetail.Nickname && this.myDetail.IDCard && this.myDetail.tell && this.myDetail.Customer_ID_Show) {
         let data = JSON.stringify(this.myDetail);
         await axios
           .post(`${process.env.api_url}/customer/insert`, data, {
@@ -262,10 +262,12 @@ export default {
           .catch((err) => {
             alert(err);
           });
+      }else{
+        alert("Else")
       }
     },
     async fn_upadatecustomer() {
-      if (!this.myDetail.Fisrtname && !this.myDetail.Lastname && !this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell) {
+      if (!this.myDetail.Fisrtname && !this.myDetail.Lastname && !this.myDetail.Nickname && !this.myDetail.IDCard && !this.myDetail.tell && !this.myDetail.Customer_ID_Show) {
         this.$refs.confirm.dailogalert("กรุณากรอกข้อมูล", ``, {
           icon: "error",
           color: "error",

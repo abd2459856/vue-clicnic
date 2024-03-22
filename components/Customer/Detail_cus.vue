@@ -23,6 +23,20 @@ legend {
       <v-form ref="formss" lazy-validation>
         <v-row>
           <v-col md="2" sm="12" cols="12" class="pb-0">
+            <div class="font-weight-bold">รหัสลูกค้า :</div>
+          </v-col>
+          <v-col md="4" sm="12" cols="12" class="pb-0">
+            <v-text-field class="costomgray" outlined solo flat dense hide-details :readonly="ReadOn" v-model="myDetail.Customer_ID_Show"
+              :rules="[(v) => !!v || '']" required></v-text-field>
+          </v-col>
+          <v-col md="2" sm="12" cols="12" class="pb-0">
+            <!-- <div class="font-weight-bold">รหัสลูกค้า :</div> -->
+          </v-col>
+          <v-col md="4" sm="12" cols="12" class="pb-0">
+            <!-- <v-text-field class="costomgray" outlined solo flat dense hide-details :readonly="ReadOn" v-model="myDetail.Customer_ID_Show"
+              :rules="[(v) => !!v || '']" required></v-text-field> -->
+          </v-col>
+          <v-col md="2" sm="12" cols="12" class="pb-0">
             <div class="font-weight-bold">ชื่อ :</div>
           </v-col>
           <v-col md="4" sm="12" cols="12" class="pb-0">
