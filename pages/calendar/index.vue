@@ -9,6 +9,18 @@
                 <v-icon>mdi-chevron-right</v-icon>
             </v-btn>
         </v-sheet>
+
+        <v-sheet>
+            <v-row cols="12" :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                <v-col :cols="12" :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="text-center">
+                    <v-toolbar-title v-if="$refs.calendar">
+                        <b> {{ $refs.calendar.title }}</b>
+                    </v-toolbar-title>
+                </v-col>
+                <v-col :cols="12" :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="text-center mt-1">
+                </v-col>
+            </v-row>
+        </v-sheet>
         <v-sheet height="600">
             <v-calendar ref="calendar" v-model="value" :weekdays="weekday" :type="type" :events="events"
                 :event-overlap-mode="mode" :event-overlap-threshold="30" :event-color="getEventColor"
