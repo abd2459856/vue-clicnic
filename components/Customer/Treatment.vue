@@ -35,7 +35,7 @@
       <v-card>
         <v-toolbar dark color="#212121">
           <v-toolbar-title
-            >{{ myProfile.ID_customer }} - {{ myProfile.Name }}</v-toolbar-title
+            >{{ myProfile.Customer_ID_Show }} - {{ myProfile.Name }}</v-toolbar-title
           >
           <v-spacer></v-spacer>
           <v-btn color="#D4AF37" @click="dialog_insert = true">
@@ -119,7 +119,7 @@
                   </v-img>
                 </v-col>
               </v-row>
-            </div> -->
+            </div> 
             <div v-if="get_img != ''" tyle="height: 85vh; overflow: auto">
               <v-row>
                 <v-col v-for="n in get_img" :key="n" cols="12">

@@ -202,7 +202,7 @@
                 };`"
               >
                 <td nowrap class="text-center">{{ i + 1 }}</td>
-                <td nowrap class="text-left">{{ item.ID_customer }}</td>
+                <td nowrap class="text-left">{{ item.Customer_ID_Show }}</td>
                 <td nowrap class="text-left">
                   <v-btn
                     icon

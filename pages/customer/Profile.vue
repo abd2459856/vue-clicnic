@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-card color="#212121" elevation="0" height="300px" class="pa-5">
-      <div align="right" class="mb-5">
+      <div class="mb-5 d-flex justify-space-between ">
+        <v-btn depressed text color="#D4AF37" href="customer"> <v-icon left> mdi-arrow-left-circle </v-icon> กลับ </v-btn>
         <v-btn depressed text color="#D4AF37" @click="fn_addNut()"> เพิ่มนัด </v-btn>
         <!-- <v-btn depressed text color="#D4AF37">
           การรักษา

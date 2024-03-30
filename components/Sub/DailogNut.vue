@@ -220,7 +220,7 @@ export default {
         .then((res) => {
           res.data.data.forEach((e) => {
             this.CoustomerOP.push({
-              text: `${e.ID_customer} - ${e.Fisrtname} ${e.Lastname}`,
+              text: `${e.Customer_ID_Show} - ${e.Fisrtname} ${e.Lastname}`,
               value: {
                 ID_customer: e.ID_customer,
                 name: `${e.Fisrtname} ${e.Lastname}`,
